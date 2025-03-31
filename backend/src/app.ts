@@ -4,7 +4,7 @@ import cors from "cors";
 import morgan from "morgan"
 import authRoutes from "./routes/authRoutes";
 import resumeRoutes from "./routes/resumeRoutes";
-import { connectDB } from "./db";
+import { connectDB } from "./config/db";
 
 dotenv.config();
 

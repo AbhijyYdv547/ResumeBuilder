@@ -1,14 +1,14 @@
 import express from "express";
 import Resume from "../models/Resume.js";
 import {userMiddleware} from "../middlewares/userMiddleware";
-import { generateResume } from "../controllers/resumeController";
+import { generateResume } from "../controllers/resumeController.js";
 
 const router = express.Router();
 
-// 📌 Generate AI-powered Resume
+//Generate
 router.post("/generate", userMiddleware, generateResume);
 
-// 📌 Get all saved resumes
+//Get all resumes
 router.get("/", userMiddleware, async (req, res) => {
     try {
       // @ts-ignore
@@ -19,20 +19,19 @@ router.get("/", userMiddleware, async (req, res) => {
   }
 });
 
-// 📌 Get a specific resume by ID
+// Get a specific resume
 router.get("/:id", userMiddleware, async (req, res) => {
   try {
     // @ts-ignore
     const resume = await Resume.findOne({ _id: req.params.id, userId: req.user.userId });
     if (!resume) res.status(404).json({ error: "Resume not found" });
-
     res.json(resume);
   } catch (error:any) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// 📌 Delete a resume
+//Delete a resume
 router.delete("/:id", userMiddleware, async (req, res) => {
   try {
     // @ts-ignore

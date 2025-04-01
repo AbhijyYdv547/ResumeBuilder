@@ -12,7 +12,7 @@ router.post("/generate", userMiddleware, generateResume);
 router.get("/", userMiddleware, async (req, res) => {
     try {
       // @ts-ignore
-    const resumes = await Resume.find({ userId: req.user.userId });
+    const resumes = await Resume.find({ userId: req.userId });
     res.json(resumes);
   } catch (error:any) {
     res.status(500).json({ error: error.message });

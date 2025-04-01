@@ -27,15 +27,16 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      res.status(401).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Invalid credentials" }); // ✅ Added return
     }
 
     // @ts-ignore
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
     res.json({ token, user });
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 export default router;

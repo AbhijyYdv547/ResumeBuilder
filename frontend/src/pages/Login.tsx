@@ -10,15 +10,27 @@ const Login = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  async function login() {
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
-    await axios.post(BACKEND_URL + "/api/auth/login", {
+ async function login() {
+  const email = emailRef.current?.value;
+  const password = passwordRef.current?.value;
+
+  try {
+    const res = await axios.post(BACKEND_URL + "/api/auth/login", {
       email,
-      password
-    })
-    navigate("/dashboard");
+      password,
+    });
+
+    if (res.data.token) {
+      localStorage.setItem("token", res.data.token); // ✅ Store token
+      navigate("/dashboard"); // ✅ Redirect to Dashboard
+    } else {
+      alert("Login failed");
+    }
+  } catch (err) {
+    alert("Invalid credentials");
   }
+}
+
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 shadow-lg bg-white">

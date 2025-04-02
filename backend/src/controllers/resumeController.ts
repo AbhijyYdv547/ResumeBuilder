@@ -9,9 +9,9 @@ const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const generateResume = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, experience, skills, education } = req.body;
+    const { name, email, phone, linkedin, experience, skills, education, projects } = req.body;
 
-    if (!name || !experience || !skills || !education) {
+    if (!name || !experience || !skills || !education || !email || !phone || !linkedin || !projects) {
       res.status(400).json({ error: "Missing required fields" });
       return;
     }
@@ -22,10 +22,47 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    const prompt = `Generate a professional resume for a person named ${name} with the following details:
-    - Experience: ${experience}
-    - Skills: ${skills}
-    - Education: ${education}`;
+    const prompt = `Generate a professional resume in a structured format (Markdown format) for a person named ${name} with the following details:
+        ### **Contact Information**
+        - **Name:** ${name}
+        - **Email:** ${email}
+        - **Phone:** ${phone}
+        - **LinkedIn:** ${linkedin}
+
+        ### **Summary**
+        Write a concise and compelling summary for ${name} based on their skills and experience. For example, a summary that highlights their experience in software development with proficiency in JavaScript, React, Node.js, and related technologies.
+
+        ### **Skills**
+        List the person's skills clearly in bullet points based on ${skills}.
+
+         ### **Experience**
+  If work experience data is provided, list it in detail. Otherwise, **create a relevant internship, open-source contribution, or freelance project**. The format should be:
+  - **Job Title:** Software Developer / Open Source Contributor / Intern
+  - **Company:** [Insert Company Name]
+  - **Location:** [Insert City, State]
+  - **Start Date - End Date:** [Insert Dates]
+  - **Key Responsibilities & Achievements:**  
+    - Developed and maintained web applications using React and Node.js.  
+    - Implemented RESTful APIs for efficient backend communication.  
+    - Optimized database queries to improve performance by 20%.  
+
+        ### **Education**
+        List education details in the following format:
+        - **Degree:** ${education}
+        - **Institution:** [Insert Institution Name]
+        - **Year of Graduation:** [Insert Year]
+
+        ### **Projects (Optional if provided)**
+        If any projects are mentioned, include them with a brief description and technologies used:
+        For example:
+        - **Project Name:** ${projects[0].name}
+        - **Description:** ${projects[0].description}
+        - **Technologies Used:** ${projects[0].technologies}
+
+        ### **Additional Notes:**
+        - Make sure the response is **properly formatted** so it can be displayed correctly on a frontend dashboard.
+        - Use **Markdown** for bold headers, bullet points, and structured formatting.
+      `;
 
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -44,7 +81,7 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
       aiResponse: resumeContent,
       template: "classic",
     });
-
+    console.log("Generated AI Resume:", resumeContent);
     res.status(200).json(newResume);
     return;
   } catch (error: any) {

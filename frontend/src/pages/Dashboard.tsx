@@ -1,97 +1,85 @@
-import { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ResumeForm from "../components/ResumeForm";
-import ResumeList from "../components/ResumeList";
 
 const Dashboard = () => {
-  const [resumes, setResumes] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch resumes when the component mounts
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    axios
-      .get("http://localhost:3000/api/resumes", {
-        headers: { Authorization: `Bearer ${token}` }, // ✅ Added "Bearer "
-      })
-      .then((res) => {
-        setResumes(res.data);
-      })
-      .catch((err) => console.error("Error fetching resumes:", err));
-  }, []);
-
-  // Logout function (removes token and redirects)
+  // Logout function
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
-  useEffect(() => {
-    console.log("Updated resumes:", resumes); // ✅ Logs after state updates
-  }, [resumes]);
+  const handleResumeSubmit = async (data: FormData) => {
+    try {
+      console.log("Submitting Form Data:", data); 
 
-const handleResumeSubmit = async (data: FormData) => {
-  try {
-    console.log("Submitting Resume Data:", data);
-
-    const token = localStorage.getItem("token"); // Get auth token from local storage
-    if (!token) {
-      alert("User not authenticated!");
-      return;
-    }
-
-    const response = await axios.post(
-      "http://localhost:3000/api/resumes/generate",
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Attach token for authentication
-        },
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("User not authenticated!");
+        return;
       }
-    );
 
-    console.log("Resume Generated Successfully:", response.data);
-    alert("Resume generated successfully!");
+      const response = await axios.post(
+        "http://localhost:3000/api/resumes/generate",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    // If needed, update the state/UI with the new resume
-    // Example: setResumes([...resumes, response.data]);
-
-  } catch (error) {
-    
-    console.error("Error Generating Resume:", error.response?.data || error.message);
-    alert("Failed to generate resume.");
-  }
-};
+      console.log("Resume Generated Successfully:", response.data);
+      alert("Resume generated successfully!");
+    } catch (error) {
+      console.error("Error Generating Resume:", error.response?.data || error.message);
+      alert("Failed to generate resume.");
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4">
-      {/* Header */}
-      <div className="w-full max-w-4xl bg-white p-6 rounded-lg shadow-md flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">Welcome,User 👋</h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-black flex flex-col items-center justify-center px-6">
+      {/* Header Section */}
+      <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl flex justify-between items-center border border-gray-200 dark:border-gray-700">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          Welcome, <span className="text-blue-600 dark:text-blue-400">User 👋</span>
+        </h2>
         <button
           onClick={logout}
-          className="px-4 py-2 bg-black text-white font-semibold rounded-md shadow-md hover:bg-gray-900 transition duration-200"
+          className="px-5 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 transition duration-200"
         >
           Logout
         </button>
       </div>
 
+      {/* Main Content */}
+      <div className="w-full max-w-5xl mt-8 flex flex-col md:flex-row gap-10 items-center md:items-start">
+        {/* Resume Form Card */}
+        <div className="w-full md:w-3/5 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-300 dark:border-gray-700">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            Create Your Resume 📄
+          </h3>
+          <ResumeForm onSubmit={handleResumeSubmit} />
+        </div>
 
-     {/* Resume Form */}
-      <div className="mt-4">
-        <ResumeForm  onSubmit={handleResumeSubmit} />
+        {/* Action Card */}
+        <div className="w-full md:w-2/5 flex flex-col gap-6">
+          <div
+            onClick={() => navigate("/resumes")}
+            className="p-5 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 transition duration-200 text-center cursor-pointer"
+          >
+            📂 View Your Resumes
+          </div>
+
+          <div className="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md text-gray-700 dark:text-gray-300 text-center">
+            ⚡ **Tip:** Keep your resume updated and precise for better job applications!
+          </div>
+        </div>
       </div>
-
-
-      {/* Resume List */}
-       <ResumeList resumes={resumes} />
     </div>
   );
 };

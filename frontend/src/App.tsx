@@ -3,6 +3,7 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Dashboard from "./pages/Dashboard"
 import Home from "./pages/Home"
+import ResumeShow from "./pages/ResumeShow"
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/dashboard" element={<Dashboard/>}/>
+      <Route path="/resumes" element={<ResumeShow/>}/>
       
     </Routes>
   </BrowserRouter>

@@ -1,11 +1,40 @@
 import mongoose from "mongoose";
 
 const ResumeSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  aiResponse: { type: String, required: true }, // AI-generated resume text
-  template: { type: String, enum: ["classic", "modern", "creative"], required: true },
-  pdfUrl: { type: String }, // Optional: Link to generated PDF if stored externally
-  createdAt: { type: Date, default: Date.now },
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  aiResponse: { type: String, required: true },
+  template: { type: String, default: "classic" },
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  phone: { type: String, required: true },
+  linkedin: { type: String, required: true },
+  summary: { type: String, required: true, default: "" },
+  experience: [
+    {
+      jobTitle: String,
+      company: String,
+      location: String,
+      startDate: String,
+      endDate: String,
+      responsibilities: [String],
+    },
+  ],
+  skills: [String],
+  education: [
+    {
+      degree: String,
+      institution: String,
+      graduationYear: String,
+    },
+  ],
+  projects: [
+    {
+      name: String,
+      description: String,
+      technologies: [String],
+    },
+  ],
 });
 
-export default mongoose.model("Resume", ResumeSchema);
+const Resume = mongoose.model("Resume", ResumeSchema);
+export default Resume;

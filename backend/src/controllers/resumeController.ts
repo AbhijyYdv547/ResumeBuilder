@@ -9,9 +9,9 @@ const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const generateResume = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, phone, linkedin, experience, skills, education, projects } = req.body;
+    const { name, email, phone, linkedin, experience, skills, education, projects, summary } = req.body;
 
-    if (!name || !experience || !skills || !education || !email || !phone || !linkedin || !projects) {
+    if (!name || !email || !phone || !linkedin || !skills || !education) {
       res.status(400).json({ error: "Missing required fields" });
       return;
     }
@@ -22,66 +22,118 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    const prompt = `Generate a professional resume in a structured format (Markdown format) for a person named ${name} with the following details:
-        ### **Contact Information**
-        - **Name:** ${name}
-        - **Email:** ${email}
-        - **Phone:** ${phone}
-        - **LinkedIn:** ${linkedin}
+    // 🔹 Format Work Experience Data (Ensures Array is Processed)
+    const formattedExperience = Array.isArray(experience) && experience.length > 0
+      ? experience
+          .filter((exp: any) => exp.jobTitle && exp.company) // Ensure it's not empty
+          .map((exp: any) => ({
+            jobTitle: exp.jobTitle.trim(),
+            company: exp.company.trim(),
+            location: exp.location?.trim() || "N/A",
+            startDate: exp.startDate,
+            endDate: exp.endDate,
+            responsibilities: Array.isArray(exp.responsibilities) ? exp.responsibilities : [],
+          }))
+      : [];
 
-        ### **Summary**
-        Write a concise and compelling summary for ${name} based on their skills and experience. For example, a summary that highlights their experience in software development with proficiency in JavaScript, React, Node.js, and related technologies.
+    // 🔹 Format Education Data
+    const formattedEducation = education?.length
+      ? education.map((edu: any) => ({
+          degree: edu.degree,
+          institution: edu.institution,
+          graduationYear: edu.graduationYear,
+        }))
+      : [];
 
-        ### **Skills**
-        List the person's skills clearly in bullet points based on ${skills}.
+    // 🔹 Format Project Data
+    const formattedProjects = projects?.length
+      ? projects.map((proj: any) => ({
+          name: proj.name,
+          description: proj.description,
+          technologies: proj.technologies,
+        }))
+      : [];
 
-         ### **Experience**
-  If work experience data is provided, list it in detail. Otherwise, **create a relevant internship, open-source contribution, or freelance project**. The format should be:
-  - **Job Title:** Software Developer / Open Source Contributor / Intern
-  - **Company:** [Insert Company Name]
-  - **Location:** [Insert City, State]
-  - **Start Date - End Date:** [Insert Dates]
-  - **Key Responsibilities & Achievements:**  
-    - Developed and maintained web applications using React and Node.js.  
-    - Implemented RESTful APIs for efficient backend communication.  
-    - Optimized database queries to improve performance by 20%.  
+    // 🔹 Use User Summary or Generate One
+    const userSummary = summary?.trim();
+    const aiGeneratedSummary = userSummary
+      ? userSummary
+      : `Generate a compelling summary for ${name}, highlighting their expertise in ${skills.join(", ")}.`;
 
-        ### **Education**
-        List education details in the following format:
-        - **Degree:** ${education}
-        - **Institution:** [Insert Institution Name]
-        - **Year of Graduation:** [Insert Year]
+    // 📝 Updated AI Prompt
+    const prompt = `Generate a professional resume in Markdown format for ${name} with these details:
+  
+### **📞 Contact Information**
+- **Name:** ${name}
+- **Email:** ${email}
+- **Phone:** ${phone}
+- **LinkedIn:** ${linkedin}
 
-        ### **Projects (Optional if provided)**
-        If any projects are mentioned, include them with a brief description and technologies used:
-        For example:
-        - **Project Name:** ${projects[0].name}
-        - **Description:** ${projects[0].description}
-        - **Technologies Used:** ${projects[0].technologies}
+### **📝 Summary**
+${aiGeneratedSummary}
 
-        ### **Additional Notes:**
-        - Make sure the response is **properly formatted** so it can be displayed correctly on a frontend dashboard.
-        - Use **Markdown** for bold headers, bullet points, and structured formatting.
-      `;
+### **💻 Skills**
+${skills.map((skill: string) => `- ${skill}`).join("\n")}
 
+### **💼 Work Experience**
+${
+  formattedExperience.length > 0
+    ? formattedExperience
+        .map(
+          (exp) => `- **Job Title:** ${exp.jobTitle}  
+  - **Company:** ${exp.company}  
+  - **Location:** ${exp.location}  
+  - **Start Date - End Date:** ${exp.startDate} - ${exp.endDate}  
+  - **Key Responsibilities:**  
+    ${exp.responsibilities.map((resp: any) => `  - ${resp}`).join("\n    ")}`
+        )
+        .join("\n\n")
+    : "No prior work experience, but eager to learn and contribute."
+}
+### **💡 Projects**
+${formattedProjects
+  .map(
+    (proj: any) => `
+- **Project Name:** ${proj.name}  
+  - **Description:** ${proj.description}  
+  - **Technologies Used:** ${proj.technologies}`
+  )
+  .join("\n\n") || "No projects listed, but actively seeking new challenges."}
+
+### **📌 Additional Notes**
+- The response should be structured properly for frontend display.
+- Use Markdown formatting for headers, bullet points, and clarity.
+`;
+
+    // 🔥 Generate AI Response
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
-
     const result = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
 
-    // ✅ Correct way to extract text response
+    // ✅ Extract AI-generated text
     const resumeContent =
       result.response.candidates?.[0]?.content?.parts?.[0]?.text || "Resume generation failed.";
 
-    // ✅ Save resume to DB
+
+
+    // ✅ Save structured data & AI response to database
     const newResume = await Resume.create({
       // @ts-ignore
       userId: req.userId,
       aiResponse: resumeContent,
       template: "classic",
+      name,
+      email,
+      phone,
+      linkedin,
+      summary: userSummary || "", // Store user-provided summary (if any)
+      experience: formattedExperience, // ✅ Ensure structured experience is stored
+      skills,
+      education: formattedEducation,
+      projects: formattedProjects,
     });
-    console.log("Generated AI Resume:", resumeContent);
+
     res.status(200).json(newResume);
     return;
   } catch (error: any) {

@@ -7,7 +7,7 @@ dotenv.config();
 export const userMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   try {
     const header = req.header("Authorization");
-    console.log("Authorization Header:", header); // Debugging log
+    // console.log("Authorization Header:", header); // Debugging log
 
     if (!header || !header.startsWith("Bearer ")) {
       res.status(403).json({ message: "Missing or invalid token" });
@@ -15,7 +15,7 @@ export const userMiddleware = (req: Request, res: Response, next: NextFunction):
     }
 
     const token = header.split(" ")[1]; // Extract token
-    console.log("Extracted Token:", token); // Debugging log
+    // console.log("Extracted Token:", token); // Debugging log
 
     if (!process.env.JWT_SECRET) {
       res.status(500).json({ message: "JWT Secret is missing" });
@@ -23,7 +23,7 @@ export const userMiddleware = (req: Request, res: Response, next: NextFunction):
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
-    console.log("Decoded Token:", decoded); // Debugging log
+    // console.log("Decoded Token:", decoded); // Debugging log
 
     // Attach user ID to request
     // @ts-ignore

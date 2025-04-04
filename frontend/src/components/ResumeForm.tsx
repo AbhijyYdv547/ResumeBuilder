@@ -29,7 +29,7 @@ interface FormData {
   linkedin: string;
   summary: string;
   experience: Experience[];
-  skills: { name: string }[];
+  skills: string[];
   education: Education[];
   projects: Project[];
 }
@@ -44,7 +44,7 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
     defaultValues: {
       summary: "",
       experience: [{ jobTitle: "", company: "", location: "", startDate: "", endDate: "", responsibilities: [""] }],
-      skills: [{ name: "" }],
+      skills: [""],
       education: [{ degree: "", institution: "", graduationYear: "" }],
       projects: [{ name: "", description: "", technologies: "" }],
     },
@@ -90,63 +90,29 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
 
       {/* Experience */}
       <h3 className="text-lg font-semibold mt-5">Work Experience</h3>
-  {experienceArray.fields.map((field, index) => {
-  const { fields: responsibilitiesFields, append, remove } = useFieldArray({
-    control,
-    name: `experience.${index}.responsibilities`
-  });
+      {experienceArray.fields.map((field, index) => (
+        <div key={field.id} className="border p-4 rounded-md mb-3">
+          <input {...register(`experience.${index}.jobTitle`)} className="input-field" placeholder="Software Developer Intern" />
+          <input {...register(`experience.${index}.company`)} className="input-field mt-2" placeholder="Company Name" />
+          <input {...register(`experience.${index}.location`)} className="input-field mt-2" placeholder="Location (Optional)" />
+          <div className="flex gap-2 mt-2">
+            <input {...register(`experience.${index}.startDate`)} type="date" className="input-field" />
+            <input {...register(`experience.${index}.endDate`)} type="date" className="input-field" />
+          </div>
 
-  return (
-    <div key={field.id} className="border p-4 rounded-md mb-3">
-      {/* Experience fields */}
-      <input {...register(`experience.${index}.jobTitle`)} className="input-field" placeholder="Software Developer Intern" />
-      <input {...register(`experience.${index}.company`)} className="input-field mt-2" placeholder="Company Name" />
-      <input {...register(`experience.${index}.location`)} className="input-field mt-2" placeholder="Location (Optional)" />
-      <div className="flex gap-2 mt-2">
-        <input {...register(`experience.${index}.startDate`)} type="date" className="input-field" />
-        <input {...register(`experience.${index}.endDate`)} type="date" className="input-field" />
-      </div>
+          {/* Responsibilities */}
+          <h4 className="text-md font-semibold mt-2">Responsibilities</h4>
+          <ul>
+            {field.responsibilities.map((_, respIndex) => (
+              <li key={respIndex} className="flex items-center gap-2">
+                <input {...register(`experience.${index}.responsibilities.${respIndex}`)} className="input-field mt-1" placeholder="e.g., Developed features in React.js" />
+              </li>
+            ))}
+          </ul>
 
-      {/* Responsibilities */}
-      <h4 className="text-md font-semibold mt-2">Responsibilities</h4>
-      <ul>
-        {responsibilitiesFields.map((resp, respIndex) => (
-          <li key={resp.id} className="flex items-center gap-2 mt-1">
-            <input
-              {...register(`experience.${index}.responsibilities.${respIndex}`)}
-              className="input-field"
-              placeholder="e.g., Developed features in React.js"
-            />
-            <button
-              type="button"
-              className="text-red-500"
-              onClick={() => remove(respIndex)}
-            >
-              ❌
-            </button>
-          </li>
-        ))}
-      </ul>
-      <button
-        type="button"
-        className="btn-add mt-2"
-        onClick={() => append("")}
-      >
-        + Add Responsibility
-      </button>
-
-      <button
-        type="button"
-        className="text-red-500 mt-2 block"
-        onClick={() => experienceArray.remove(index)}
-      >
-        ❌ Remove Experience
-      </button>
-    </div>
-  );
-})}
-
-
+          <button type="button" className="text-red-500 mt-2" onClick={() => experienceArray.remove(index)}>❌ Remove Experience</button>
+        </div>
+      ))}
       <button type="button" className="btn-add" onClick={() => experienceArray.append({ jobTitle: "", company: "", location: "", startDate: "", endDate: "", responsibilities: [""] })}>
         + Add Another Experience
       </button>
@@ -156,7 +122,7 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
       {skillsArray.fields.map((field, index) => (
   <div key={field.id} className="flex gap-2 items-center mt-2">
     <input
-      {...register(`skills.${index}.name`, { required: true })}
+      {...register(`skills.${index}`, { required: true })}
       className="input-field"
       placeholder="React, Node.js"
     />

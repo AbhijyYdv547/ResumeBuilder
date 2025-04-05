@@ -22,7 +22,6 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    // 🔹 Format Work Experience Data (Ensures Array is Processed)
     const formattedExperience = Array.isArray(experience) && experience.length > 0
       ? experience
           .filter((exp: any) => exp.jobTitle && exp.company) // Ensure it's not empty
@@ -36,7 +35,6 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
           }))
       : [];
 
-    // 🔹 Format Education Data
     const formattedEducation = education?.length
       ? education.map((edu: any) => ({
           degree: edu.degree,
@@ -45,7 +43,7 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
         }))
       : [];
 
-    // 🔹 Format Project Data
+
     const formattedProjects = projects?.length
       ? projects.map((proj: any) => ({
           name: proj.name,
@@ -54,13 +52,11 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
         }))
       : [];
 
-    // 🔹 Use User Summary or Generate One
     const userSummary = summary?.trim();
     const aiGeneratedSummary = userSummary
       ? userSummary
       : `Generate a compelling summary for ${name}, highlighting their expertise in ${skills.join(", ")}.`;
 
-    // 📝 Updated AI Prompt
     const prompt = `Generate a professional resume in Markdown format for ${name} with these details:
   
 ### **📞 Contact Information**
@@ -105,19 +101,16 @@ ${formattedProjects
 - Use Markdown formatting for headers, bullet points, and clarity.
 `;
 
-    // 🔥 Generate AI Response
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
 
-    // ✅ Extract AI-generated text
     const resumeContent =
       result.response.candidates?.[0]?.content?.parts?.[0]?.text || "Resume generation failed.";
 
 
 
-    // ✅ Save structured data & AI response to database
     const newResume = await Resume.create({
       // @ts-ignore
       userId: req.userId,
@@ -127,8 +120,8 @@ ${formattedProjects
       email,
       phone,
       linkedin,
-      summary: userSummary || "", // Store user-provided summary (if any)
-      experience: formattedExperience, // ✅ Ensure structured experience is stored
+      summary: userSummary || "", 
+      experience: formattedExperience, 
       skills,
       education: formattedEducation,
       projects: formattedProjects,

@@ -8,7 +8,7 @@ interface Resume {
   email: string;
   phone: string;
   linkedin: string;
-  summary:string;
+  summary: string;
   experience: {
     jobTitle: string;
     company: string;
@@ -116,79 +116,79 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
 
                 {/* Right Content */}
                 <div className="w-2/3 bg-white p-6">
-  {/* Summary */}
-  {formattedResume.summary && (
-    <div>
-      <h3 className="text-lg font-semibold text-gray-800">Summary</h3>
-      <p className="text-gray-700 whitespace-pre-line">{formattedResume.summary}</p>
-    </div>
-  )}
+                  {/* Summary */}
+                  {formattedResume.summary && (
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-800">Summary</h3>
+                      <p className="text-gray-700 whitespace-pre-line">{formattedResume.summary}</p>
+                    </div>
+                  )}
 
                   {/* Experience */}
-{resume.experience.length > 0 && (
-  <div className="mt-6">
-    <h3 className="text-lg font-semibold text-gray-800 mb-2"> Work Experience</h3>
-    {resume.experience.map((exp, index) => (
-      <div
-        key={index}
-        className="mb-4 p-4 bg-gray-50 rounded shadow-sm border border-gray-200"
-      >
-        <p className="text-md font-semibold text-gray-800">{exp.jobTitle}</p>
-        <p className="text-gray-700">
-          at <strong>{exp.company}</strong>, {exp.location}
-        </p>
-        <p className="text-sm text-gray-600">
-          {exp.startDate} - {exp.endDate}
-        </p>
-        {exp.responsibilities && exp.responsibilities.length > 0 && (
-          <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700">
-            {exp.responsibilities.map((resp, i) => (
-              <li key={i}>{resp}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-    ))}
-  </div>
-)}
+                  {resume.experience.length > 0 && (
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2"> Work Experience</h3>
+                      {resume.experience.map((exp, index) => (
+                        <div
+                          key={index}
+                          className="mb-4 p-4 bg-gray-50 rounded shadow-sm border border-gray-200"
+                        >
+                          <p className="text-md font-semibold text-gray-800">{exp.jobTitle}</p>
+                          <p className="text-gray-700">
+                            at <strong>{exp.company}</strong>, {exp.location}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {exp.startDate} - {exp.endDate}
+                          </p>
+                          {exp.responsibilities && exp.responsibilities.length > 0 && (
+                            <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700">
+                              {exp.responsibilities.map((resp, i) => (
+                                <li key={i}>{resp}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
 
-                   {/* Education */}
-  {formattedResume.education && (
-    <div className="mt-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2"> Education</h3>
-      <div className="p-3 bg-gray-50 rounded shadow-sm border border-gray-200 whitespace-pre-line text-gray-800">
-        {formattedResume.education}
-      </div>
-    </div>
-  )}
+                  {/* Education */}
+                  {formattedResume.education && (
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2"> Education</h3>
+                      <div className="p-3 bg-gray-50 rounded shadow-sm border border-gray-200 whitespace-pre-line text-gray-800">
+                        {formattedResume.education}
+                      </div>
+                    </div>
+                  )}
 
-                {/* Projects */}
-{resume.projects.length > 0 && (
-  <div className="mt-6">
-    <h3 className="text-lg font-semibold text-gray-800 mb-2"> Projects</h3>
-    {resume.projects.map((project, index) => (
-      <div
-        key={index}
-        className="mb-4 p-4 bg-gray-50 rounded shadow-sm border border-gray-200"
-      >
-        <p className="text-md font-semibold text-gray-800">{project.name}</p>
-        <p className="text-gray-700 mt-1">{project.description}</p>
-        {project.technologies.length > 0 && (
-          <p className="text-sm text-gray-600 mt-2">
-            <strong>Technologies:</strong> {project.technologies.join(", ")}
-          </p>
-        )}
-      </div>
-    ))}
-  </div>
-)}
+                  {/* Projects */}
+                  {resume.projects.length > 0 && (
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2"> Projects</h3>
+                      {resume.projects.map((project, index) => (
+                        <div
+                          key={index}
+                          className="mb-4 p-4 bg-gray-50 rounded shadow-sm border border-gray-200"
+                        >
+                          <p className="text-md font-semibold text-gray-800">{project.name}</p>
+                          <p className="text-gray-700 mt-1">{project.description}</p>
+                          {project.technologies.length > 0 && (
+                            <p className="text-sm text-gray-600 mt-2">
+                              <strong>Technologies:</strong> {project.technologies.join(", ")}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-                 
-  {/* PDF Viewer */}
-  <div className="mt-6">
-    <PdfViewer resume={formattedResume} />
-  </div>
+
+                  {/* PDF Viewer */}
+                  <div className="mt-6">
+                    <PdfViewer resume={formattedResume} />
+                  </div>
                 </div>
               </div>
             );

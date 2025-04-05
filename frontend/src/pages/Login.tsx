@@ -21,8 +21,8 @@ const Login = () => {
     });
 
     if (res.data.token) {
-      localStorage.setItem("token", res.data.token); // ✅ Store token
-      navigate("/dashboard"); // ✅ Redirect to Dashboard
+      localStorage.setItem("token", res.data.token);
+      navigate("/dashboard");
     } else {
       alert("Login failed");
     }

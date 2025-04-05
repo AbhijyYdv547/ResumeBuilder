@@ -44,7 +44,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
           {resumes.map((resume) => {
             console.log("AI Response from DB:", resume.aiResponse);
 
-            // Extract details from aiResponse (Markdown text)
+            // Extract details from aiResponse 
             const resumeText = resume.aiResponse || "";
             const nameMatch = resumeText.match(/^#\s*(.+)$/m);
             const phoneMatch = resumeText.match(/\*\*Phone:\*\*\s*([\+\d\s-]+)/);
@@ -82,7 +82,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
 
             return (
               <div key={resume._id} className="shadow-lg border rounded-lg flex overflow-hidden">
-                {/* Left Sidebar */}
+
                 <div className="w-1/3 bg-gray-900 text-white p-6">
                   <h2 className="text-2xl font-bold">{formattedResume.name}</h2>
                   <p className="mt-2">
@@ -99,7 +99,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
                     </a>
                   </p>
 
-                  {/* Skills */}
+        
                   {formattedResume.skills.length > 0 && (
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold text-gray-300">Skills</h3>
@@ -114,9 +114,8 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
                   )}
                 </div>
 
-                {/* Right Content */}
                 <div className="w-2/3 bg-white p-6">
-                  {/* Summary */}
+
                   {formattedResume.summary && (
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800">Summary</h3>
@@ -124,7 +123,6 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
                     </div>
                   )}
 
-                  {/* Experience */}
                   {resume.experience.length > 0 && (
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2"> Work Experience</h3>
@@ -153,7 +151,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
                   )}
 
 
-                  {/* Education */}
+
                   {formattedResume.education && (
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2"> Education</h3>
@@ -163,7 +161,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
                     </div>
                   )}
 
-                  {/* Projects */}
+
                   {resume.projects.length > 0 && (
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2"> Projects</h3>
@@ -185,7 +183,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes }) => {
                   )}
 
 
-                  {/* PDF Viewer */}
+   
                   <div className="mt-6">
                     <PdfViewer resume={formattedResume} />
                   </div>

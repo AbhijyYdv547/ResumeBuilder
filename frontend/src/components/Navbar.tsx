@@ -17,7 +17,7 @@ export const Navbar = () => {
           ResumeGen
         </h1>
 
-        {/* Desktop Menu */}
+
         <div className="hidden md:flex gap-4">
           <Button
             text="Login"
@@ -35,7 +35,7 @@ export const Navbar = () => {
           />
         </div>
 
-        {/* Mobile Menu Toggle */}
+
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? (
@@ -48,7 +48,7 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+
       {isOpen && (
         <div className="md:hidden px-4 pb-4 space-y-2">
           <Button

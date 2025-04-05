@@ -106,7 +106,7 @@ const ResumeDocument = ({ resume }: { resume: any }) => {
           <Text style={styles.contactInfo}>{resume.email}</Text>
           <Text style={styles.contactInfo}>{resume.linkedin}</Text>
 
-          {/* Skills */}
+          
           {resume.skills?.length > 0 && (
             <>
               <Text style={{ ...styles.sectionHeader, color: "#e5e7eb" }}>
@@ -121,9 +121,9 @@ const ResumeDocument = ({ resume }: { resume: any }) => {
           )}
         </View>
 
-        {/* Main Content */}
+       
         <View style={styles.mainContent}>
-          {/* Summary */}
+        
           {resume.summary && (
             <>
               <Text style={styles.sectionHeader}>Summary</Text>
@@ -131,7 +131,6 @@ const ResumeDocument = ({ resume }: { resume: any }) => {
             </>
           )}
 
-          {/* Experience */}
           {normalizedExperience.length > 0 && (
             <>
               <Text style={styles.sectionHeader}>Work Experience</Text>
@@ -162,7 +161,6 @@ const ResumeDocument = ({ resume }: { resume: any }) => {
             </>
           )}
 
-          {/* Education */}
           {resume.education && (
             <>
               <Text style={styles.sectionHeader}>Education</Text>

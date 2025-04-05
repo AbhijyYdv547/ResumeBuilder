@@ -10,7 +10,6 @@ const ResumeShow = () => {
   const [resumes, setResumes] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch resumes when the component mounts
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -20,7 +19,7 @@ const ResumeShow = () => {
 
     axios
       .get("http://localhost:3000/api/resumes", {
-        headers: { Authorization: `Bearer ${token}` }, // ✅ Added "Bearer "
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         setResumes(res.data);
@@ -28,14 +27,14 @@ const ResumeShow = () => {
       .catch((err) => console.error("Error fetching resumes:", err));
   }, []);
 
-  
+
   useEffect(() => {
-    console.log("Updated resumes:", resumes); // ✅ Logs after state updates
+    console.log("Updated resumes:", resumes);
   }, [resumes]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-black flex flex-col items-center px-6 py-10">
-      {/* Back Button */}
+    
       <button
         onClick={() => navigate("/dashboard")}
         className="flex items-center gap-2 px-5 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 transition duration-200"
@@ -47,10 +46,10 @@ const ResumeShow = () => {
         📜 Your Resumes
       </h2>
 
-      {/* Resume List */}
+
       <div className="w-full max-w-6xl">
 
-<ResumeList resumes={resumes} />
+        <ResumeList resumes={resumes} />
       </div>
     </div>
   )

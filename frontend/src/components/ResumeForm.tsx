@@ -59,27 +59,22 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Create Your Resume</h2>
 
-      {/* Name */}
       <label className="block text-gray-700 font-semibold">Full Name</label>
       <input {...register("name", { required: "Name is required" })} className="input-field" placeholder="John Doe" />
       {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
-      {/* Email */}
       <label className="block text-gray-700 font-semibold mt-3">Email</label>
       <input {...register("email", { required: "Email is required" })} className="input-field" type="email" placeholder="john.doe@email.com" />
       {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-      {/* Phone */}
       <label className="block text-gray-700 font-semibold mt-3">Phone</label>
       <input {...register("phone", { required: "Phone number is required" })} className="input-field" placeholder="(123) 456-7890" />
       {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
 
-      {/* LinkedIn */}
       <label className="block text-gray-700 font-semibold mt-3">LinkedIn Profile</label>
       <input {...register("linkedin", { required: "LinkedIn profile is required" })} className="input-field" type="url" placeholder="https://linkedin.com/in/johndoe" />
       {errors.linkedin && <p className="text-red-500">{errors.linkedin.message}</p>}
 
-      {/* Summary */}
       <label className="block text-gray-700 font-semibold mt-3">Summary</label>
       <textarea
         {...register("summary", { required: "Summary is required" })}
@@ -88,7 +83,6 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
       />
       {errors.summary && <p className="text-red-500">{errors.summary.message}</p>}
 
-      {/* Experience */}
       <h3 className="text-lg font-semibold mt-5">Work Experience</h3>
       {experienceArray.fields.map((field, index) => (
         <div key={field.id} className="border p-4 rounded-md mb-3">
@@ -100,7 +94,6 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
             <input {...register(`experience.${index}.endDate`)} type="date" className="input-field" />
           </div>
 
-          {/* Responsibilities */}
           <h4 className="text-md font-semibold mt-2">Responsibilities</h4>
           <ul>
             {field.responsibilities.map((_, respIndex) => (
@@ -117,7 +110,6 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
         + Add Another Experience
       </button>
 
-      {/* Skills */}
        <h3 className="text-lg font-semibold mt-5">Skills</h3>
       {skillsArray.fields.map((field, index) => (
   <div key={field.id} className="flex gap-2 items-center mt-2">
@@ -135,7 +127,6 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
   + Add Skill
 </button>
 
-      {/* Education */}
       <h3 className="text-lg font-semibold mt-5">Education</h3>
       {educationArray.fields.map((field, index) => (
         <div key={field.id} className="border p-4 rounded-md mb-3">
@@ -147,7 +138,6 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
       ))}
       <button type="button" className="btn-add" onClick={() => educationArray.append({ degree: "", institution: "", graduationYear: "" })}>+ Add Education</button>
 
-      {/* Projects */}
       <h3 className="text-lg font-semibold mt-5">Projects</h3>
       {projectsArray.fields.map((field, index) => (
         <div key={field.id} className="border p-4 rounded-md mb-3">
@@ -159,7 +149,6 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
       ))}
       <button type="button" className="btn-add" onClick={() => projectsArray.append({ name: "", description: "", technologies: "" })}>+ Add Project</button>
 
-      {/* Submit Button */}
       <button type="submit" className="btn-submit mt-5">Generate Resume</button>
     </form>
   );

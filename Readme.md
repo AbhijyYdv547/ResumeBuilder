@@ -7,9 +7,13 @@ A full-stack **Resume Builder** application that allows users to register, log i
 ## 📁 Project Structure
 
 resume-builder/
+
 ├── frontend/ # React or Next.js app (UI)
+
 ├── backend/ # Express.js server (API)
+
 ├── README.md # You're reading it!
+
 └── .gitignore
 
 

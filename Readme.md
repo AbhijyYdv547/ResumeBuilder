@@ -7,9 +7,13 @@ A full-stack **Resume Builder** application that allows users to register, log i
 ## 📁 Project Structure
 
 resume-builder/
+
 ├── frontend/ # React or Next.js app (UI)
+
 ├── backend/ # Express.js server (API)
+
 ├── README.md # You're reading it!
+
 └── .gitignore
 
 
@@ -79,7 +83,25 @@ npm install
 ## Start the frontend dev server:
 npm run dev
 
-Visit the app at http://localhost:3000
+Visit the app at http://localhost:5173
+
+```
+
+## 📷 Screenshots
+## Homepage
+![Homepage](https://github.com/user-attachments/assets/256e4728-bae5-43db-993a-ad43f9174ffa)
+##Register Page
+![Register page](https://github.com/user-attachments/assets/669d7112-5853-4b98-8b65-20130ef7db06)
+## Login Page
+![Login page](https://github.com/user-attachments/assets/6bc1fc44-4140-48c1-a73e-cfd906a8ddea)
+## Resume-dashboard
+![Resume-dashboard](https://github.com/user-attachments/assets/cd5c3924-fddf-4601-b671-4b6ca0fdd8e1)
+## Your resumes
+![Your resumes](https://github.com/user-attachments/assets/fd79990c-5b4c-420a-921d-6f5794202acd)
+## Downloaded resume
+![resume](https://github.com/user-attachments/assets/1e17bc67-f222-46a4-9087-b76bf98cc5ff)
+
+
 
 ## Folder Structure
 

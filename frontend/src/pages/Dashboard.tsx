@@ -2,8 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ResumeForm from "../components/ResumeForm";
-import dotenv from "dotenv"
-dotenv.config();
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ const Dashboard = () => {
       }
 
       const response = await axios.post(
-        process.env.BACKEND_URL + "/api/resumes/generate",
+        import.meta.env.BACKEND_URL + "/api/resumes/generate",
         data,
         {
           headers: {

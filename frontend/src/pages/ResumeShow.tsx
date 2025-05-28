@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import ResumeList from '../components/ResumeList'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import dotenv from "dotenv"
-dotenv.config();
+
 
 const ResumeShow = () => {
   const [resumes, setResumes] = useState([]);
@@ -17,7 +16,7 @@ const ResumeShow = () => {
     }
 
     axios
-      .get( process.env.BACKEND_URL + "/api/resumes", {
+      .get( import.meta.env.BACKEND_URL + "/api/resumes", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

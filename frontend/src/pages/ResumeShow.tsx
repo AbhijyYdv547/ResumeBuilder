@@ -16,7 +16,7 @@ const ResumeShow = () => {
     }
 
     axios
-      .get( import.meta.env.BACKEND_URL + "/api/resumes", {
+      .get( import.meta.env.VITE_BACKEND_URL + "/api/resumes", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

@@ -24,7 +24,7 @@ const Dashboard = () => {
       }
 
       const response = await axios.post(
-        import.meta.env.BACKEND_URL + "/api/resumes/generate",
+        import.meta.env.VITE_BACKEND_URL + "/api/resumes/generate",
         data,
         {
           headers: {

@@ -15,7 +15,7 @@ const Register = () => {
     const name = nameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    await axios.post(import.meta.env.BACKEND_URL + "/api/auth/register", {
+    await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/auth/register", {
       name,
       email,
       password

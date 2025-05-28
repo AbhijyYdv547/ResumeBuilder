@@ -1,4 +1,3 @@
-import React from "react";
 import { Page, Text, View, Document, StyleSheet, BlobProvider } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   page: {

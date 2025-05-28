@@ -2,7 +2,8 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ResumeForm from "../components/ResumeForm";
-import { BACKEND_URL } from "../config";
+import dotenv from "dotenv"
+dotenv.config();
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Dashboard = () => {
       }
 
       const response = await axios.post(
-        BACKEND_URL + "/api/resumes/generate",
+        process.env.BACKEND_URL + "/api/resumes/generate",
         data,
         {
           headers: {
@@ -37,6 +38,7 @@ const Dashboard = () => {
       console.log("Resume Generated Successfully:", response.data);
       alert("Resume generated successfully!");
     } catch (error) {
+      // @ts-ignore
       console.error("Error Generating Resume:", error.response?.data || error.message);
       alert("Failed to generate resume.");
     }
@@ -64,7 +66,7 @@ const Dashboard = () => {
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             Create Your Resume 📄
           </h3>
-          <ResumeForm onSubmit={handleResumeSubmit} />
+          <ResumeForm onSubmit={()=>handleResumeSubmit} />
         </div>
 
         {/* Action Card */}

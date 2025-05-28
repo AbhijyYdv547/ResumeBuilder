@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
+import dotenv from "dotenv"
+dotenv.config();
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 
@@ -15,7 +16,7 @@ const Login = () => {
   const password = passwordRef.current?.value;
 
   try {
-    const res = await axios.post(BACKEND_URL + "/api/auth/login", {
+    const res = await axios.post(process.env.BACKEND_URL + "/api/auth/login", {
       email,
       password,
     });

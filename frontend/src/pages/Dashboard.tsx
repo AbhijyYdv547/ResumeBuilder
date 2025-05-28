@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ResumeForm from "../components/ResumeForm";
+import { BACKEND_URL } from "../config";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Dashboard = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/api/resumes/generate",
+        BACKEND_URL + "/api/resumes/generate",
         data,
         {
           headers: {

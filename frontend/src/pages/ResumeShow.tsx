@@ -3,6 +3,7 @@ import ResumeForm from '../components/ResumeForm'
 import ResumeList from '../components/ResumeList'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BACKEND_URL } from '../config';
 
 
 
@@ -18,7 +19,7 @@ const ResumeShow = () => {
     }
 
     axios
-      .get("http://localhost:3000/api/resumes", {
+      .get( BACKEND_URL + "/api/resumes", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

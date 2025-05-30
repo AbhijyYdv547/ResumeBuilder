@@ -10,9 +10,10 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-    origin: process.env.REACT_APP_URL,
+    origin: 'https://resume-builder-brie4gyb8-abhijay-yadavs-projects.vercel.app',
     credentials: true,
   }));
+  
 app.use(morgan("dev"));
 app.use(express.json());
 connectDB();

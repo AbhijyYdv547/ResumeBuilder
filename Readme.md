@@ -146,7 +146,6 @@ Made by Abhijay yAdav – feel free to reach out!
 ---
 
 Let me know if you want to:
-- Add a deployment section (e.g., Vercel + Render).
 - Add Docker setup instructions.
 - Customize the resume layout or generation logic (PDF part).
 - Add environment variable examples for `.env.example`.

@@ -45,6 +45,13 @@ resume-builder/
 
 ---
 
+## 🌐 Deployed Link
+
+You can try the live app here:  
+🔗 [Resume Builder – Live Demo](https://resume-builder-ivory-nine.vercel.app)
+
+---
+
 ## ⚙️ Getting Started
 
 ### ✅ Prerequisites

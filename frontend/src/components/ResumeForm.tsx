@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 
 interface Experience {
@@ -51,7 +50,10 @@ const ResumeForm: React.FC<{ onSubmit: (data: FormData) => void }> = ({ onSubmit
   });
 
   const experienceArray = useFieldArray({ control, name: "experience" });
-  const skillsArray = useFieldArray({ control, name: "skills" });
+  const skillsArray = useFieldArray({
+    control,
+    name: "skills",
+  });
   const educationArray = useFieldArray({ control, name: "education" });
   const projectsArray = useFieldArray({ control, name: "projects" });
 

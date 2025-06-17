@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "dev": "npx tsc -b && node ./dist/app.js"
-  },
+  "build": "tsc -b",
+  "start": "npm run build && node ./dist/app.js",
+  "dev": "tsc -b && node ./dist/app.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

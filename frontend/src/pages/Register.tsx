@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 
@@ -15,7 +14,7 @@ const Register = () => {
     const name = nameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    await axios.post(BACKEND_URL + "/api/auth/register", {
+    await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/auth/register", {
       name,
       email,
       password

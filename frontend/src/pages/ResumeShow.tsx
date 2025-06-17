@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import ResumeForm from '../components/ResumeForm'
+import { useEffect, useState } from 'react'
 import ResumeList from '../components/ResumeList'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -18,7 +17,7 @@ const ResumeShow = () => {
     }
 
     axios
-      .get("http://localhost:3000/api/resumes", {
+    .get( import.meta.env.VITE_BACKEND_URL + "/api/resumes", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

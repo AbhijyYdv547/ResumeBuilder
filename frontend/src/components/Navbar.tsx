@@ -1,78 +1,88 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+import {
+  Navbar,
+  NavBody,
+  NavItems,
+  MobileNav,
+  NavbarLogo,
+  NavbarButton,
+  MobileNavHeader,
+  MobileNavToggle,
+  MobileNavMenu,
+} from "@/components/ui/resizable-navbar";
+import { navItems } from "@/constants/index";
 import { useState } from "react";
-import { Button } from "./Button";
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useNavigate } from "react-router-dom";
 
-export const Navbar = () => {
+export default function ResizableNav() {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow fixed top-0 left-0 w-full z-50">
-      <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-        <h1
-          className="text-2xl font-bold text-gray-900 cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          ResumeGen
-        </h1>
+    <div className="w-full fixed z-100">
+      <Navbar>
+        {/* Desktop Navigation */}
+        <NavBody>
+          <NavbarLogo />
+          <NavItems items={navItems} />
+          <div className="flex items-center gap-4">
+            <NavbarButton
+              variant="primary"
+              className="flex items-center justify-center gap-1"
+              onClick={() => navigate("/login")}
+            >
+              <img src={"/log-in.svg"} alt="" width={30} height={30} />
+            </NavbarButton>
+            <NavbarButton
+              variant="primary"
+              className="flex items-center justify-center gap-1"
+              href="https://github.com/AbhijyYdv547"
+            >
+              <img src={"/git.svg"} alt="" width={30} height={30} />
+            </NavbarButton>
+            
+            
+          </div>
+        </NavBody>
 
+        {/* Mobile Navigation */}
+        <MobileNav>
+          <MobileNavHeader>
+            <NavbarLogo />
+            <MobileNavToggle
+              isOpen={isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            />
+          </MobileNavHeader>
 
-        <div className="hidden md:flex gap-4">
-          <Button
-            text="Login"
-            variant="primary"
-            fullWidth={false}
-            loading={false}
-            onClick={() => navigate("/login")}
-          />
-          <Button
-            text="Get Started"
-            variant="primary"
-            fullWidth={false}
-            loading={false}
-            onClick={() => navigate("/register")}
-          />
-        </div>
-
-
-        <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? (
-  <XMarkIcon className="w-6 h-6 text-gray-800" />
-) : (
-  <Bars3Icon className="w-6 h-6 text-gray-800" />
-)}
-
-          </button>
-        </div>
-      </div>
-
-
-      {isOpen && (
-        <div className="md:hidden px-4 pb-4 space-y-2">
-          <Button
-            text="Login"
-            variant="primary"
-            fullWidth={true}
-            loading={false}
-            onClick={() => {
-              navigate("/login");
-              setIsOpen(false);
-            }}
-          />
-          <Button
-            text="Get Started"
-            variant="primary"
-            fullWidth={true}
-            loading={false}
-            onClick={() => {
-              navigate("/register");
-              setIsOpen(false);
-            }}
-          />
-        </div>
-      )}
-    </header>
+          <MobileNavMenu
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+          >
+            {navItems.map((item, idx) => (
+              <a
+                key={`mobile-link-${idx}`}
+                href={item.link}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative text-neutral-600 dark:text-neutral-300"
+              >
+                <span className="block">{item.name}</span>
+              </a>
+            ))}
+            <div className="flex w-full flex-col gap-4">
+              <NavbarButton
+                href="https://github.com/AbhijyYdv547/ResumeBuilder"
+                onClick={() => setIsMobileMenuOpen(false)}
+                variant="primary"
+                className="flex items-center justify-center gap-1 w-full"
+              >
+                <img src={"/git.svg"} alt="" width={30} height={30} />
+                <span className="text-black">Github</span>
+              </NavbarButton>
+            </div>
+          </MobileNavMenu>
+        </MobileNav>
+      </Navbar>
+    </div>
   );
-};
+}

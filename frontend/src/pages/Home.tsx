@@ -3,6 +3,7 @@ import  ResizableNav  from "@/components/Navbar";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import MagicButton from "@/components/ui/magic-button";
 import { CircleArrowRight, LogIn } from "lucide-react";
+import { FeaturesSection } from "@/components/ui/feature-section";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Home = () => {
           Use AI to generate job-winning resumes with customizable templates and instant PDF downloads.
         </p>
 
-        <div className="flex flex-wrap justify-center mt-8 gap-6">
+        <div className="flex flex-wrap justify-center mt-8 gap-6 z-0">
             <MagicButton
               title={"Register"}
             icon={<CircleArrowRight />}
@@ -52,6 +53,12 @@ const Home = () => {
       </section>
       <BackgroundBeams/>
 
+      <section className="w-full max-w-6xl flex flex-col items-center text-center py-24 px-6" id="features">
+        <h1 className="text-5xl md:text-6xl font-extrabold text-gray-200 leading-tight">
+          Features
+        </h1>
+        <FeaturesSection/>
+      </section>
 
     </div>
   );

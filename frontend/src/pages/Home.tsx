@@ -1,24 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
-import  {Navbar}  from "../components/Navbar";
+import  ResizableNav  from "@/components/Navbar";
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6 font-sans">
-      {/* Top Navbar */}
-      <Navbar />
+    <div className="min-h-screen bg-black flex flex-col items-center p-6 font-sans">
 
-      {/* Spacer for fixed navbar */}
+      <ResizableNav />
+
       <div className="h-20"></div>
 
-      {/* Hero Section */}
       <section className="w-full max-w-6xl flex flex-col items-center text-center py-24 px-6">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+        <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight">
           Build Stunning Resumes Effortlessly
         </h1>
-        <p className="mt-5 text-xl text-gray-600 max-w-2xl">
+        <p className="mt-5 text-xl text-gray-300 max-w-2xl">
           Use AI to generate job-winning resumes with customizable templates and instant PDF downloads.
         </p>
 

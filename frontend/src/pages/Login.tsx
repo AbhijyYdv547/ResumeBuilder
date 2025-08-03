@@ -26,6 +26,7 @@ const Login = () => {
       alert("Login failed");
     }
   } catch (err) {
+    console.log(err);
     alert("Invalid credentials");
   }
 }

@@ -28,14 +28,14 @@ export default function ResizableNav() {
           <div className="flex items-center gap-4">
             <NavbarButton
               variant="primary"
-              className="flex items-center justify-center gap-1"
+              className="bg-slate-200 hover:bg-gray-50"
               onClick={() => navigate("/login")}
             >
               <img src={"/log-in.svg"} alt="" width={30} height={30} />
             </NavbarButton>
             <NavbarButton
               variant="primary"
-              className="flex items-center justify-center gap-1"
+              className="bg-slate-200 hover:bg-gray-50"
               href="https://github.com/AbhijyYdv547"
             >
               <img src={"/git.svg"} alt="" width={30} height={30} />

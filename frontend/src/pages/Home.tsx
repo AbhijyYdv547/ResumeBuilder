@@ -8,6 +8,7 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { motion } from "motion/react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { templates } from "@/constants";
+import Footer from "@/components/Footer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -135,6 +136,8 @@ const Home = () => {
       >
         <FaqSection />
       </section>
+
+      <Footer />
     </div>
   );
 };

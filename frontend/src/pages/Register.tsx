@@ -1,8 +1,7 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
-// import { Input } from "../components/Input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
@@ -13,17 +12,27 @@ const Register = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  async function register() {
-    const name = nameRef.current?.value;
-    const email = emailRef.current?.value;
+  async function register(e: React.FormEvent) {
+    e.preventDefault();
+
+    const name = nameRef.current?.value.trim();
+    const email = emailRef.current?.value.trim();
     const password = passwordRef.current?.value;
-    await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/auth/register", {
-      name,
-      email,
-      password,
-    });
-    alert("User has been registered");
-    navigate("/login");
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
+        {
+          name,
+          email,
+          password,
+        },
+      );
+      alert("User has been registered");
+      navigate("/login");
+    } catch (e: unknown) {
+      console.log(e);
+      alert("Registration failed. Please try again.");
+    }
   }
 
   return (
@@ -39,17 +48,35 @@ const Register = () => {
         <form className="my-8" onSubmit={register}>
           <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
             <LabelInputContainer>
-              <Label htmlFor="Name">Name</Label>
-              <Input id="firstname" placeholder="Tyler" type="text" />
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="Tyler"
+                type="text"
+                ref={nameRef}
+                autoComplete="name"
+              />
             </LabelInputContainer>
           </div>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+            <Input
+              id="email"
+              placeholder="projectmayhem@fc.com"
+              type="email"
+              ref={emailRef}
+              autoComplete="email"
+            />
           </LabelInputContainer>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" placeholder="••••••••" type="password" />
+            <Input
+              id="password"
+              placeholder="••••••••"
+              type="password"
+              ref={passwordRef}
+              autoComplete="new-password"
+            />
           </LabelInputContainer>
 
           <button
@@ -63,20 +90,14 @@ const Register = () => {
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
           <div className="flex justify-evenly items-center">
-            <button
-              className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
-              type="submit"
-            >
+            <button className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]">
               <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
               <span className="text-sm text-neutral-700 dark:text-neutral-300">
                 GitHub
               </span>
               <BottomGradient />
             </button>
-            <button
-              className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
-              type="submit"
-            >
+            <button className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]">
               <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
               <span className="text-sm text-neutral-700 dark:text-neutral-300">
                 Google

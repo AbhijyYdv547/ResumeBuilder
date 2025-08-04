@@ -9,6 +9,10 @@ import {
   CheckCircle,
   HelpCircle,
   ShieldCheck,
+  BookText,
+  BriefcaseBusiness,
+  GitBranch,
+  MessageCircleDashed,
 } from "lucide-react";
 
 export const navItems = [
@@ -107,5 +111,32 @@ export const faqs = [
     description:
       "Yes, all our templates are designed to be Applicant Tracking System (ATS) compatible.",
     icon: <FileText />,
+  },
+];
+
+export const socialMedia = [
+  {
+    id: 1,
+    link: "https://github.com/AbhijyYdv547",
+    title: "Github",
+    icon: <GitBranch />,
+  },
+  {
+    id: 2,
+    link: "https://x.com/YadavAbhij50732",
+    title: "Twitter",
+    icon: <MessageCircleDashed />,
+  },
+  {
+    id: 3,
+    link: "https://www.linkedin.com/in/abj-ydv",
+    title: "Linkedin",
+    icon: <BriefcaseBusiness />,
+  },
+  {
+    id: 4,
+    link: "https://dev.to/abhijay_yadav_712e10ab036",
+    title: "Dev.to",
+    icon: <BookText />,
   },
 ];

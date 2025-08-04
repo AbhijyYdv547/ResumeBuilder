@@ -7,7 +7,7 @@ import { FeaturesSection } from "@/components/ui/feature-section";
 import { FaqSection } from "@/components/ui/faq-section";
 import { motion } from "motion/react";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
-import { templates } from "@/constants";
+import { socialMedia, templates } from "@/constants";
 import Footer from "@/components/Footer";
 
 const Home = () => {
@@ -131,10 +131,43 @@ const Home = () => {
       </section>
 
       <section
-        className="w-full max-w-6xl flex flex-col items-center text-center py-24 px-6"
+        className="w-full max-w-6xl flex flex-col items-center text-center py-14 px-6"
         id="faq"
       >
         <FaqSection />
+      </section>
+
+      <section
+        className="w-full max-w-6xl flex flex-col items-center text-center py-14 px-6 border-b border-border"
+        id="contact"
+      >
+        <motion.div
+          className="text-center px-4"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <span className="uppercase text-xs tracking-widest text-gray-300 font-semibold">
+            My Socials
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+            Let&apos;s <span className="text-green-500">Connect </span>
+          </h2>
+        </motion.div>
+        <div className="flex flex-col gap-5 md:flex-row lg:flex-row justify-center">
+          {socialMedia.map((s) => (
+            <MagicButton
+              key={s.id}
+              title={s.title}
+              icon={s.icon}
+              position="left"
+              handleClick={() => {
+                window.open(s.link, "_blank", "noopener,noreferrer");
+              }}
+            />
+          ))}
+        </div>
       </section>
 
       <Footer />

@@ -4,6 +4,8 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import MagicButton from "@/components/ui/magic-button";
 import { CircleArrowRight, LogIn } from "lucide-react";
 import { FeaturesSection } from "@/components/ui/feature-section";
+import { FaqSection } from "@/components/ui/faq-section";
+import { motion } from "motion/react";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -54,11 +56,27 @@ const Home = () => {
       <BackgroundBeams/>
 
       <section className="w-full max-w-6xl flex flex-col items-center text-center py-24 px-6" id="features">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-gray-200 leading-tight">
-          Features
-        </h1>
-        <FeaturesSection/>
+                    <motion.div
+                        className="text-center space-y-4 px-4"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true }}
+                    >
+                        <span className="uppercase text-lg tracking-widest text-gray-200 font-semibold">
+                            Features Section
+                        </span>
+                        <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-gray-200">
+                            Features <span className="text-green-400"> Of </span> Resume Builder
+                        </h2>
+                    </motion.div>
+        <FeaturesSection />
       </section>
+
+      <section className="w-full max-w-6xl flex flex-col items-center text-center py-24 px-6" id="faq">
+        <FaqSection/>
+      </section>
+
 
     </div>
   );

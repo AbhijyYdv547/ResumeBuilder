@@ -7,12 +7,14 @@ import {
     Database,
     Headset,
     CheckCircle,
+    HelpCircle,
+    ShieldCheck,
 } from "lucide-react";
 
 export const navItems = [
   { name: "Features", link: "#features" },
-  { name: "FAQ", link: "#faq" },
   { name: "Templates", link: "#templates" },
+  { name: "FAQ", link: "#faq" },
   { name: "Contact", link: "#contact" },
 ];
 
@@ -59,3 +61,32 @@ export const features = [
         icon: <CheckCircle />,
     },
 ];
+
+
+export const faqs = [
+    {
+        title: "Is the resume builder free to use?",
+        description:
+            "Yes! You can build and download your resume for free. No credit card required.",
+        icon: <HelpCircle />,
+    },
+    {
+        title: "Will my data be secure?",
+        description:
+            "We take privacy seriously. Your data is encrypted and never shared with third parties.",
+        icon: <ShieldCheck />,
+    },
+    {
+        title: "Can I download my resume as a PDF?",
+        description:
+            "Absolutely. You can export your resume anytime in a professional PDF format.",
+        icon: <Download />,
+    },
+    {
+        title: "Are the resume templates ATS-friendly?",
+        description:
+            "Yes, all our templates are designed to be Applicant Tracking System (ATS) compatible.",
+        icon: <FileText />,
+    },
+];
+

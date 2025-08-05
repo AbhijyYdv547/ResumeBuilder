@@ -20,6 +20,7 @@ import { PhoneInput } from "@/components/ui/phone-input";
 import { Textarea } from "@/components/ui/textarea";
 import { TagsInput } from "@/components/ui/tags-input";
 import { useFieldArray } from "react-hook-form";
+import axios from "axios";
 
 const formSchema = z.object({
   fullname: z.string().min(1).min(5).max(15),
@@ -96,17 +97,32 @@ export default function MyForm() {
   const educationArray = useFieldArray({ control, name: "education" });
   const projectsArray = useFieldArray({ control, name: "projects" });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>,
+      console.log("Submitting Form Data:", values);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast("User not authenticated!");
+        return;
+      }
+
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/api/resumes/generate",
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+
+      console.log("Resume Generated Successfully:", response.data);
+      toast("Resume generated successfully!");
+    } catch (error: unknown) {
+      console.error("Caught an error:", error);
+      toast("Failed to generate resume.");
     }
   }
 

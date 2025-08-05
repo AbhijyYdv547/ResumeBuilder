@@ -1,63 +1,40 @@
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 import Form from "@/components/Form";
-import ResizableNav from "@/components/Navbar";
+// import ResizableNav from "@/components/Navbar";
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { ResizableSide } from "@/components/Sidebar";
+// import { ResizableSide } from "@/components/Sidebar";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Logout function
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
-  const handleResumeSubmit = async (data: FormData) => {
-    try {
-      console.log("Submitting Form Data:", data);
-
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("User not authenticated!");
-        return;
-      }
-
-      const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/api/resumes/generate",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      console.log("Resume Generated Successfully:", response.data);
-      alert("Resume generated successfully!");
-    } catch (error: unknown) {
-      console.error("Caught an error:", error);
-      alert("Failed to generate resume.");
-    }
-  };
+  // const logout = () => {
+  //   localStorage.removeItem("token");
+  //   navigate("/login");
+  // };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#262626]">
-      {/* ResizableNav at the top */}
-      <div className="mb-16">
-        <ResizableNav />
-      </div>
+    <>
+      <div className="flex h-screen overflow-hidden bg-[#262626]">
+        {/* Fixed Sidebar */}
+        <ResizableSide />
 
-      {/* Form wrapper */}
-      <div className="flex justify-center px-6">
-        <div className="w-full max-w-5xl rounded-xl dark:bg-white bg-black p-8 shadow-lg">
-          <h1 className="text-xl text-white text-center">
-            Fill Form to Generate Resume
-          </h1>
-          <Form />
+        {/* Scrollable Main Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="max-w-5xl mx-auto bg-black p-8 rounded-xl shadow-lg dark:bg-white">
+            <h1 className="text-xl text-white text-center mb-4 dark:text-black">
+              Fill Form to Generate Resume
+            </h1>
+            <Form />
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Background Animation (optional if it overlays) */}
+      <BackgroundBeams />
+    </>
   );
 };
 

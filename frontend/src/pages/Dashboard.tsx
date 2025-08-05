@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ResumeForm from "../components/ResumeForm";
 import Form from "@/components/Form";
 import ResizableNav from "@/components/Navbar";
 
@@ -36,13 +35,8 @@ const Dashboard = () => {
 
       console.log("Resume Generated Successfully:", response.data);
       alert("Resume generated successfully!");
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      console.error(
-        "Error Generating Resume:",
-        error.response?.data || error.message,
-      );
+    } catch (error: unknown) {
+      console.error("Caught an error:", error);
       alert("Failed to generate resume.");
     }
   };

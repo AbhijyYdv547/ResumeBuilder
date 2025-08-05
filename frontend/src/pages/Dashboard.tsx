@@ -1,7 +1,7 @@
-
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ResumeForm from "../components/ResumeForm";
+import Form from "@/components/Form";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   const handleResumeSubmit = async (data: FormData) => {
     try {
-      console.log("Submitting Form Data:", data); 
+      console.log("Submitting Form Data:", data);
 
       const token = localStorage.getItem("token");
       if (!token) {
@@ -30,14 +30,18 @@ const Dashboard = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       console.log("Resume Generated Successfully:", response.data);
       alert("Resume generated successfully!");
     } catch (error) {
-      // @ts-ignore
-      console.error("Error Generating Resume:", error.response?.data || error.message);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      console.error(
+        "Error Generating Resume:",
+        error.response?.data || error.message,
+      );
       alert("Failed to generate resume.");
     }
   };
@@ -47,7 +51,8 @@ const Dashboard = () => {
       {/* Header Section */}
       <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl flex justify-between items-center border border-gray-200 dark:border-gray-700">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Welcome, <span className="text-blue-600 dark:text-blue-400">User 👋</span>
+          Welcome,{" "}
+          <span className="text-blue-600 dark:text-blue-400">User 👋</span>
         </h2>
         <button
           onClick={logout}
@@ -64,7 +69,8 @@ const Dashboard = () => {
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             Create Your Resume 📄
           </h3>
-          <ResumeForm onSubmit={()=>handleResumeSubmit} />
+          <Form />
+          {/* <ResumeForm onSubmit={()=>handleResumeSubmit} /> */}
         </div>
 
         {/* Action Card */}
@@ -77,7 +83,8 @@ const Dashboard = () => {
           </div>
 
           <div className="p-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md text-gray-700 dark:text-gray-300 text-center">
-            ⚡ **Tip:** Keep your resume updated and precise for better job applications!
+            ⚡ **Tip:** Keep your resume updated and precise for better job
+            applications!
           </div>
         </div>
       </div>

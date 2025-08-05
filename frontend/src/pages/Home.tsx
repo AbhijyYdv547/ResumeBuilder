@@ -100,10 +100,10 @@ const Home = () => {
         <div className="w-full flex flex-col justify-evenly items-center text-center py-24 px-6 md:flex-row">
           {templates.map((s) => (
             <CardContainer className="inter-var h-32 w-96">
-              <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border ">
+              <CardBody className="dark:bg-gray-50 relative group/card hover:shadow-2xl hover:shadow-emerald-500/[0.1] bg-black border-white/[0.2] dark:border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border ">
                 <CardItem
                   translateZ="50"
-                  className="text-xl font-bold text-neutral-600 dark:text-white"
+                  className="text-xl font-bold dark:text-neutral-600 text-white"
                 >
                   {s.title}
                 </CardItem>
@@ -119,7 +119,7 @@ const Home = () => {
                 <div className="flex justify-between items-center mt-8">
                   <CardItem
                     translateZ="50"
-                    className="text-lg font-bold text-neutral-600 dark:text-white"
+                    className="text-lg font-bold dark:text-neutral-600 text-white"
                   >
                     {s.description}
                   </CardItem>

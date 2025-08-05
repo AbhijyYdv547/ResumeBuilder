@@ -24,13 +24,13 @@ export function FaqSection() {
         {faqs.map((s) => (
           <div
             key={s.title}
-            className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-6 rounded-3xl overflow-hidden flex-1"
+            className="relative bg-gradient-to-b from-neutral-900 dark:from-neutral-100 to-neutral-950 dark:to-white p-6 rounded-3xl overflow-hidden flex-1"
           >
             <Grid size={30} />
-            <span className="text-2xl font-bold text-neutral-800 dark:text-white relative z-20 text-center">
+            <span className="text-2xl font-bold dark:text-neutral-800 text-white relative z-20 text-center">
               {s.title}
             </span>
-            <p className="text-neutral-600 dark:text-neutral-400 mt-4 text-base font-normal relative z-20">
+            <p className="dark:text-neutral-600 text-neutral-400 mt-4 text-base font-normal relative z-20">
               {s.description}
             </p>
           </div>

@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+// import { useState } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,9 +26,7 @@ const formSchema = z.object({
   phone: z.string().min(10).max(10),
   linkedin: z.string().min(1),
   summary: z.string().min(25).max(50),
-  skills: z.array(z.string()).min(1, {
-    error: "Please select at least one item",
-  }),
+  skills: z.array(z.string()).min(1),
 });
 
 export default function MyForm() {

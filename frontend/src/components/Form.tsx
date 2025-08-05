@@ -101,7 +101,7 @@ export default function MyForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
               <FormLabel>Phone number</FormLabel>
-              <FormControl className="w-full">
+              <FormControl className="w-full flex items-center ">
                 <PhoneInput
                   placeholder="123-456-7890"
                   {...field}
@@ -144,7 +144,7 @@ export default function MyForm() {
               <FormControl>
                 <Textarea
                   placeholder="A brief summary about yourself"
-                  className="resize-none"
+                  className="resize-none text-white bg-zinc-800"
                   {...field}
                 />
               </FormControl>
@@ -162,7 +162,7 @@ export default function MyForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Enter your Skills.</FormLabel>
-              <FormControl>
+              <FormControl className="bg-zinc-800">
                 <TagsInput
                   value={field.value}
                   onValueChange={field.onChange}

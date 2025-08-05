@@ -3,6 +3,7 @@ import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import React, { FormEvent, RefObject } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
 
 interface AuthPageProps {
   nameRef?: RefObject<HTMLInputElement | null>;
@@ -19,6 +20,8 @@ const AuthPage = ({
   login,
   onSubmit,
 }: AuthPageProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className="h-screen w-screen bg-[#262626] flex justify-center items-center">
       <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
@@ -94,12 +97,27 @@ const AuthPage = ({
           </div>
         </form>
 
-        <div className="text-center text-sm text-gray-50">
-          Don&apos;t have an account?{" "}
-          <a href="#" className="underline underline-offset-4">
-            Sign up
-          </a>
-        </div>
+        {login ? (
+          <div className="text-center text-sm text-gray-50">
+            Already have an account?{" "}
+            <a
+              onClick={() => navigate("/register")}
+              className="underline underline-offset-4 cursor-pointer"
+            >
+              Login
+            </a>
+          </div>
+        ) : (
+          <div className="text-center text-sm text-gray-50">
+            Don&apos;t have an account?{" "}
+            <a
+              onClick={() => navigate("/login")}
+              className="underline underline-offset-4 cursor-pointer"
+            >
+              Sign up
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

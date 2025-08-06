@@ -23,7 +23,7 @@ const AuthPage = ({
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen w-screen bg-[#262626] flex justify-center items-center">
+    <div className="min-h-screen min-w-screen bg-[#262626] flex justify-center items-center">
       <div className="shadow-input mx-auto w-full max-w-md rounded-none dark:bg-white p-4 md:rounded-2xl md:p-8 bg-black">
         <h2 className="text-xl font-bold dark:text-neutral-800 text-neutral-200 text-center">
           {login ? "Welcome back 😎 " : "Welcome to Resume Builder😊"}

@@ -26,12 +26,12 @@ export function ResizableSide() {
     },
     {
       label: "Profile",
-      func: () => navigate("/profile"),
+      func: () => navigate("/dashboard/profile"),
       icon: <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-200" />,
     },
     {
       label: "Resume",
-      func: () => navigate("/resumes"),
+      func: () => navigate("/dashboard/resumes"),
       icon: <IconSettings className="h-5 w-5 shrink-0 text-neutral-200" />,
     },
     {

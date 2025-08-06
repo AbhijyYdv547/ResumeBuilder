@@ -18,6 +18,7 @@ import { TagsInput } from "@/components/ui/tags-input";
 import { useFieldArray } from "react-hook-form";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 const formSchema = z.object({
   fullname: z.string().min(1).min(5).max(15),
@@ -50,6 +51,7 @@ const formSchema = z.object({
       technologies: z.string(),
     }),
   ),
+  template: z.string(),
 });
 
 export default function MyForm() {
@@ -86,6 +88,7 @@ export default function MyForm() {
           technologies: "",
         },
       ],
+      template: "professional",
     },
   });
   const { control } = form;
@@ -190,6 +193,41 @@ export default function MyForm() {
                 />
               </FormControl>
               <FormDescription>Enter your phone number.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="template"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Template</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  className="flex flex-wrap gap-4"
+                >
+                  {[
+                    ["Professional", "professional"],
+                    ["Creative", "creative"],
+                    ["Compact", "compact"],
+                  ].map(([label, value]) => (
+                    <div key={value} className="flex items-center space-x-2">
+                      <RadioGroupItem id={value} value={value} />
+                      <label
+                        htmlFor={value}
+                        className="text-sm font-medium text-white"
+                      >
+                        {label}
+                      </label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+              <FormDescription>Select your Template</FormDescription>
               <FormMessage />
             </FormItem>
           )}

@@ -1,4 +1,4 @@
-import Resume from "../models/Resume";
+import Resume from "@/models/Resume";
 import { Request, Response } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";

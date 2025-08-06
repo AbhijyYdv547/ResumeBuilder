@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response,Request } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
@@ -20,9 +20,7 @@ export const userMiddleware = (req: Request, res: Response, next: NextFunction):
       return;
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
-
-    // @ts-ignore
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { userId: string };
     req.userId = decoded.userId;
     next(); 
   } catch (error) {

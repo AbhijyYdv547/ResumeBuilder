@@ -5,6 +5,8 @@ import morgan from "morgan"
 import authRoutes from "./routes/authRoutes";
 import resumeRoutes from "./routes/resumeRoutes";
 import { connectDB } from "./config/db";
+import profileRoutes from "./routes/profileRoutes";
+
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/resumes", resumeRoutes);
+app.use("api/profile",profileRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

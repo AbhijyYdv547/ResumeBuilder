@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthPage from "@/components/AuthPage";
+import { toast } from "@/hooks/use-toast";
 
 const Register = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -24,11 +25,17 @@ const Register = () => {
           password,
         },
       );
-      alert("User has been registered");
+      toast({
+        title: "User has been registered",
+        variant: "default",
+      });
       navigate("/login");
     } catch (e: unknown) {
       console.log(e);
-      alert("Registration failed. Please try again.");
+      toast({
+        title: "Registration failed. Please try again.",
+        variant: "destructive",
+      });
     }
   }
 

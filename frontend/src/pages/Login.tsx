@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthPage from "@/components/AuthPage";
+import { toast } from "@/hooks/use-toast";
 
 const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -25,13 +26,23 @@ const Login = () => {
 
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
+        toast({
+          title: "Login successful!",
+          variant: "default",
+        });
         navigate("/dashboard");
       } else {
-        alert("Login failed");
+        toast({
+          title: "Login failed",
+          variant: "destructive",
+        });
       }
     } catch (err) {
       console.log(err);
-      alert("Invalid credentials");
+      toast({
+        title: "Invalid credentials",
+        variant: "destructive",
+      });
     }
   }
 

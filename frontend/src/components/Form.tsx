@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { TagsInput } from "@/components/ui/tags-input";
 import { useFieldArray } from "react-hook-form";
 import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   fullname: z.string().min(1).min(5).max(15),
@@ -100,7 +100,10 @@ export default function MyForm() {
 
       const token = localStorage.getItem("token");
       if (!token) {
-        toast("User not authenticated!");
+        toast({
+          title: "User not authenticated!",
+          variant: "destructive",
+        });
         return;
       }
 
@@ -116,10 +119,16 @@ export default function MyForm() {
       );
 
       console.log("Resume Generated Successfully:", response.data);
-      toast("Resume generated successfully!");
+      toast({
+        title: "Resume generated successfully!",
+        variant: "default",
+      });
     } catch (error: unknown) {
       console.error("Caught an error:", error);
-      toast("Failed to generate resume.");
+      toast({
+        title: "Failed to generate resume.",
+        variant: "destructive",
+      });
     }
   }
 

@@ -1,10 +1,7 @@
-"use client";
-// import { useState } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-// import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -322,23 +319,25 @@ export default function MyForm() {
             </div>
 
             <FormLabel>Responsibilities</FormLabel>
-            {field.responsibilities.map((_, respIndex) => (
-              <FormField
-                key={respIndex}
-                control={control}
-                name={`experience.${index}.responsibilities.${respIndex}`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="e.g. Developed features using React"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            ))}
+            {form
+              .watch(`experience.${index}.responsibilities`)
+              ?.map((_, respIndex) => (
+                <FormField
+                  key={respIndex}
+                  control={control}
+                  name={`experience.${index}.responsibilities.${respIndex}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="e.g. Developed features using React"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              ))}
 
             <Button
               type="button"

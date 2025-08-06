@@ -10,10 +10,7 @@ const Dashboard = () => {
   // const navigate = useNavigate();
 
   // Logout function
-  // const logout = () => {
-  //   localStorage.removeItem("token");
-  //   navigate("/login");
-  // };
+  //
 
   return (
     <>

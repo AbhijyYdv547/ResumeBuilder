@@ -1,3 +1,4 @@
+import 'module-alias/register'; 
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -22,7 +23,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/resumes", resumeRoutes);
-app.use("api/profile",profileRoutes);
+app.use("/api/profile",profileRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

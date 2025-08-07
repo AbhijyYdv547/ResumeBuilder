@@ -9,14 +9,14 @@ const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const generateResume = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, phone, linkedin, experience, skills, education, projects, summary } = req.body;
+    const { name, email, phone, linkedin, experience, skills, education, projects, summary, template } = req.body;
 
     if (!name || !email || !phone || !linkedin || !skills || !education) {
       res.status(400).json({ error: "Missing required fields" });
+      console.log("Missing fields")
       return;
     }
 
-    // @ts-ignore
     if (!req.userId) {
       res.status(401).json({ error: "Unauthorized request" });
       return;
@@ -24,32 +24,32 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
 
     const formattedExperience = Array.isArray(experience) && experience.length > 0
       ? experience
-          .filter((exp: any) => exp.jobTitle && exp.company) // Ensure it's not empty
-          .map((exp: any) => ({
-            jobTitle: exp.jobTitle.trim(),
-            company: exp.company.trim(),
-            location: exp.location?.trim() || "N/A",
-            startDate: exp.startDate,
-            endDate: exp.endDate,
-            responsibilities: Array.isArray(exp.responsibilities) ? exp.responsibilities : [],
-          }))
+        .filter((exp: any) => exp.jobTitle && exp.company) // Ensure it's not empty
+        .map((exp: any) => ({
+          jobTitle: exp.jobTitle.trim(),
+          company: exp.company.trim(),
+          location: exp.location?.trim() || "N/A",
+          startDate: exp.startDate,
+          endDate: exp.endDate,
+          responsibilities: Array.isArray(exp.responsibilities) ? exp.responsibilities : [],
+        }))
       : [];
 
     const formattedEducation = education?.length
       ? education.map((edu: any) => ({
-          degree: edu.degree,
-          institution: edu.institution,
-          graduationYear: edu.graduationYear,
-        }))
+        degree: edu.degree,
+        institution: edu.institution,
+        graduationYear: edu.graduationYear,
+      }))
       : [];
 
 
     const formattedProjects = projects?.length
       ? projects.map((proj: any) => ({
-          name: proj.name,
-          description: proj.description,
-          technologies: proj.technologies,
-        }))
+        name: proj.name,
+        description: proj.description,
+        technologies: proj.technologies,
+      }))
       : [];
 
     const userSummary = summary?.trim();
@@ -59,47 +59,46 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
 
     const prompt = `Generate a professional resume in Markdown format for ${name} with these details:
   
-### **📞 Contact Information**
-- **Name:** ${name}
-- **Email:** ${email}
-- **Phone:** ${phone}
-- **LinkedIn:** ${linkedin}
+        ### **📞 Contact Information**
+        - **Name:** ${name}
+        - **Email:** ${email}
+        - **Phone:** ${phone}
+        - **LinkedIn:** ${linkedin}
 
-### **📝 Summary**
-${aiGeneratedSummary}
+        ### **📝 Summary**
+        ${aiGeneratedSummary}
 
-### **💻 Skills**
-${skills.map((skill: string) => `- ${skill}`).join("\n")}
+        ### **💻 Skills**
+        ${skills.map((skill: string) => `- ${skill}`).join("\n")}
 
-### **💼 Work Experience**
-${
-  formattedExperience.length > 0
-    ? formattedExperience
-        .map(
-          (exp) => `- **Job Title:** ${exp.jobTitle}  
-  - **Company:** ${exp.company}  
-  - **Location:** ${exp.location}  
-  - **Start Date - End Date:** ${exp.startDate} - ${exp.endDate}  
-  - **Key Responsibilities:**  
-    ${exp.responsibilities.map((resp: any) => `  - ${resp}`).join("\n    ")}`
-        )
-        .join("\n\n")
-    : "No prior work experience, but eager to learn and contribute."
-}
-### **💡 Projects**
-${formattedProjects
-  .map(
-    (proj: any) => `
-- **Project Name:** ${proj.name}  
-  - **Description:** ${proj.description}  
-  - **Technologies Used:** ${proj.technologies}`
-  )
-  .join("\n\n") || "No projects listed, but actively seeking new challenges."}
-
-### **📌 Additional Notes**
-- The response should be structured properly for frontend display.
-- Use Markdown formatting for headers, bullet points, and clarity.
-`;
+        ### **💼 Work Experience**
+        ${formattedExperience.length > 0
+                ? formattedExperience
+                  .map(
+                    (exp) => `- **Job Title:** ${exp.jobTitle}  
+          - **Company:** ${exp.company}  
+          - **Location:** ${exp.location}  
+          - **Start Date - End Date:** ${exp.startDate} - ${exp.endDate}  
+          - **Key Responsibilities:**  
+            ${exp.responsibilities.map((resp: any) => `  - ${resp}`).join("\n    ")}`
+                  )
+                  .join("\n\n")
+                : "No prior work experience, but eager to learn and contribute."
+              }
+        ### **💡 Projects**
+        ${formattedProjects
+                .map(
+                  (proj: any) => `
+        - **Project Name:** ${proj.name}  
+          - **Description:** ${proj.description}  
+          - **Technologies Used:** ${proj.technologies}`
+                )
+                .join("\n\n") || "No projects listed, but actively seeking new challenges."}
+              
+        ### **📌 Additional Notes**
+        - The response should be structured properly for frontend display.
+        - Use Markdown formatting for headers, bullet points, and clarity.
+        `;
 
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent({
@@ -112,22 +111,35 @@ ${formattedProjects
 
 
     const newResume = await Resume.create({
-      // @ts-ignore
       userId: req.userId,
       aiResponse: resumeContent,
-      template: "classic",
+      template,
       name,
       email,
       phone,
       linkedin,
-      summary: userSummary || "", 
-      experience: formattedExperience, 
+      summary: userSummary || "",
+      experience: formattedExperience,
       skills,
       education: formattedEducation,
       projects: formattedProjects,
     });
 
-    res.status(200).json(newResume);
+    res.status(200).json({
+      id: newResume._id,
+      template: newResume.template,
+      resumeData: {
+        name,
+        email,
+        phone,
+        linkedin,
+        summary: newResume.summary,
+        experience: formattedExperience,
+        skills,
+        education: formattedEducation,
+        projects: formattedProjects
+      }
+    });
     return;
   } catch (error: any) {
     console.error("Error generating resume:", error);

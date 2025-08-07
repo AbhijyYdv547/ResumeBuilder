@@ -10,6 +10,7 @@ export const validate =
       res.status(400).json({
         errors: result.error.flatten().fieldErrors,
       });
+      console.log("Validation error")
       return;
     }
 

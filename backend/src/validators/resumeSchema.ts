@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const resumeSchema = z.object({
-  fullname: z.string().min(1).min(5).max(15),
+  name: z.string().min(1).min(5).max(15),
   email: z.string().email(),
   phone: z.string().min(10).max(10),
   linkedin: z.string().url(),

@@ -21,9 +21,13 @@ import { toast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 const formSchema = z.object({
-  fullname: z.string().min(1).min(5).max(15),
+  name: z.string().min(5).max(15),
   email: z.string().email(),
-  phone: z.string().min(10).max(10),
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15, "Phone number is too long")
+    .regex(/^\+?[1-9]\d{9,14}$/, "Invalid phone number"),
   linkedin: z.string().url(),
   summary: z.string().min(25).max(500),
   skills: z.array(z.string()).min(1),
@@ -58,7 +62,7 @@ export default function MyForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullname: "",
+      name: "",
       email: "",
       phone: "",
       linkedin: "",
@@ -143,7 +147,7 @@ export default function MyForm() {
       >
         <FormField
           control={form.control}
-          name="fullname"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Full Name</FormLabel>
@@ -189,7 +193,7 @@ export default function MyForm() {
                 <PhoneInput
                   placeholder="123-456-7890"
                   {...field}
-                  defaultCountry="TR"
+                  defaultCountry="IN"
                 />
               </FormControl>
               <FormDescription>Enter your phone number.</FormDescription>

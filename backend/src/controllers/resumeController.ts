@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { buildResumePrompt } from "@/utils/buildResumePrompt";
+import { formatResumeInput } from "@/utils/formatResumeInput";
 
 dotenv.config();
 
@@ -23,83 +25,11 @@ export const genResController = async (req: Request, res: Response): Promise<voi
       return;
     }
 
-    const formattedExperience = Array.isArray(experience) && experience.length > 0
-      ? experience
-        .filter((exp: any) => exp.jobTitle && exp.company) // Ensure it's not empty
-        .map((exp: any) => ({
-          jobTitle: exp.jobTitle.trim(),
-          company: exp.company.trim(),
-          location: exp.location?.trim() || "N/A",
-          startDate: exp.startDate,
-          endDate: exp.endDate,
-          responsibilities: Array.isArray(exp.responsibilities) ? exp.responsibilities : [],
-        }))
-      : [];
-
-    const formattedEducation = education?.length
-      ? education.map((edu: any) => ({
-        degree: edu.degree,
-        institution: edu.institution,
-        graduationYear: edu.graduationYear,
-      }))
-      : [];
-
-
-    const formattedProjects = projects?.length
-      ? projects.map((proj: any) => ({
-        name: proj.name,
-        description: proj.description,
-        technologies: proj.technologies,
-      }))
-      : [];
-
-    const userSummary = summary?.trim();
-    const aiGeneratedSummary = userSummary
-      ? userSummary
-      : `Generate a compelling summary for ${name}, highlighting their expertise in ${skills.join(", ")}.`;
-
-    const prompt = `Generate a professional resume in Markdown format for ${name} with these details:
-  
-        ### **📞 Contact Information**
-        - **Name:** ${name}
-        - **Email:** ${email}
-        - **Phone:** ${phone}
-        - **LinkedIn:** ${linkedin}
-
-        ### **📝 Summary**
-        ${aiGeneratedSummary}
-
-        ### **💻 Skills**
-        ${skills.map((skill: string) => `- ${skill}`).join("\n")}
-
-        ### **💼 Work Experience**
-        ${formattedExperience.length > 0
-                ? formattedExperience
-                  .map(
-                    (exp) => `- **Job Title:** ${exp.jobTitle}  
-          - **Company:** ${exp.company}  
-          - **Location:** ${exp.location}  
-          - **Start Date - End Date:** ${exp.startDate} - ${exp.endDate}  
-          - **Key Responsibilities:**  
-            ${exp.responsibilities.map((resp: any) => `  - ${resp}`).join("\n    ")}`
-                  )
-                  .join("\n\n")
-                : "No prior work experience, but eager to learn and contribute."
-              }
-        ### **💡 Projects**
-        ${formattedProjects
-                .map(
-                  (proj: any) => `
-        - **Project Name:** ${proj.name}  
-          - **Description:** ${proj.description}  
-          - **Technologies Used:** ${proj.technologies}`
-                )
-                .join("\n\n") || "No projects listed, but actively seeking new challenges."}
-              
-        ### **📌 Additional Notes**
-        - The response should be structured properly for frontend display.
-        - Use Markdown formatting for headers, bullet points, and clarity.
-        `;
+    const {formattedExperience,formattedEducation,formattedProjects} = formatResumeInput({experience,education,projects})
+      
+    const userSummary = summary?.trim()
+   
+    const prompt = buildResumePrompt({name,email,phone,linkedin,experience:formattedExperience,education:formattedEducation,skills,projects:formattedProjects,summary:userSummary})
 
     const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent({
@@ -107,9 +37,12 @@ export const genResController = async (req: Request, res: Response): Promise<voi
     });
 
     const resumeContent =
-      result.response.candidates?.[0]?.content?.parts?.[0]?.text || "Resume generation failed.";
+      result.response.candidates?.[0]?.content?.parts?.[0]?.text;
 
-
+    if(!resumeContent){
+      res.status(500).json({error: "Failed to generate Resume"})
+      return;
+    }
 
     const newResume = await Resume.create({
       userId: req.userId,

@@ -2,12 +2,13 @@ import Resume from "@/models/Resume";
 import { Request, Response } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 dotenv.config();
 
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
-export const generateResume = async (req: Request, res: Response): Promise<void> => {
+export const genResController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, phone, linkedin, experience, skills, education, projects, summary, template } = req.body;
 
@@ -147,3 +148,49 @@ export const generateResume = async (req: Request, res: Response): Promise<void>
     return;
   }
 };
+
+
+export const getResController = async (req: Request, res: Response) => {
+  try {
+
+    const resumes = await Resume.find({ userId: req.userId });
+    res.json(resumes);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+export const getSpecificController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "Invalid resume ID" });
+      return;
+    }
+    const resume = await Resume.findOne({ _id: id, userId: req.userId });
+    if (!resume) {
+  res.status(404).json({ error: "Resume not found" });
+  return;
+}
+    res.json(resume);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+export const delResController = async (req: Request, res: Response) => {
+  try {
+
+    const deleted = await Resume.findOneAndDelete({ _id: req.params.id, userId: req.userId });
+
+    if (!deleted) {
+      res.status(404).json({ error: "Resume not found" });
+      return;
+    }
+    res.json({ message: "Resume deleted successfully" });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}

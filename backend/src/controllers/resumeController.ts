@@ -34,27 +34,24 @@ export const genResController = async (req: Request, res: Response): Promise<voi
 
     const prompt = buildResumePrompt({ 
       name, 
-      email, 
-      phone, 
-      linkedin, 
-      experience: formattedExperience, 
-      education: formattedEducation, 
       skills, 
-      projects: formattedProjects, 
       summary: userSummary 
     })
 
-    const resumeContent = await geminiGeneration({prompt});;
+   const aiSummary = await geminiGeneration({ prompt });
+  const cleanSummary = userSummary?.length
+  ? userSummary
+  : aiSummary?.trim() || "Passionate and results-driven professional.";
+
 
     const newResume = await Resume.create({
       userId: req.userId,
-      aiResponse: resumeContent,
       template,
       name,
       email,
       phone,
       linkedin,
-      summary: userSummary || "",
+      summary: cleanSummary,
       experience: formattedExperience,
       skills,
       education: formattedEducation,
@@ -64,8 +61,6 @@ export const genResController = async (req: Request, res: Response): Promise<voi
     res.status(200).json({
       id: newResume._id,
       template: newResume.template,
-      aiResponse: resumeContent,
-      resumeData: {
         name,
         email,
         phone,
@@ -75,7 +70,6 @@ export const genResController = async (req: Request, res: Response): Promise<voi
         skills,
         education: formattedEducation,
         projects: formattedProjects,
-      }
     });
     return;
   } catch (error:any) {

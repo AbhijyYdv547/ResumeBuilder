@@ -19,6 +19,7 @@ const ResumeShow = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
+        console.log("Raw resume response:", res.data);
         setResumes(res.data);
       })
       .catch((err) => console.error("Error fetching resumes:", err));
@@ -35,7 +36,11 @@ const ResumeShow = () => {
       </h2>
 
       <div className="w-full max-w-6xl">
-        <ResumeList resumes={resumes} />
+        {resumes.length > 0 ? (
+          <ResumeList resumes={resumes} />
+        ) : (
+          <p className="text-gray-500 dark:text-gray-300">Loading or no resumes found.</p>
+        )}
       </div>
     </div>
   );

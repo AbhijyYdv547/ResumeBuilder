@@ -38,10 +38,10 @@ export const genResController = async (req: Request, res: Response): Promise<voi
       summary: userSummary 
     })
 
-   const aiSummary = await geminiGeneration({ prompt });
-  const cleanSummary = userSummary?.length
-  ? userSummary
-  : aiSummary?.trim() || "Passionate and results-driven professional.";
+  //  const aiSummary = await geminiGeneration({ prompt });
+  // const cleanSummary = userSummary?.length
+  // ? userSummary
+  // : aiSummary?.trim() || "Passionate and results-driven professional.";
 
 
     const newResume = await Resume.create({
@@ -51,7 +51,7 @@ export const genResController = async (req: Request, res: Response): Promise<voi
       email,
       phone,
       linkedin,
-      summary: cleanSummary,
+      summary: userSummary,
       experience: formattedExperience,
       skills,
       education: formattedEducation,

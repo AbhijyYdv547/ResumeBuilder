@@ -4,16 +4,38 @@ import ResumeTemplateCompact from "./ResumeTemplateCompact";
 import { BlobProvider } from "@react-pdf/renderer";
 
 
+interface Experience {
+    jobTitle: string;
+    company: string;
+    location?: string;
+    startDate: string;
+    endDate: string;
+    responsibilities: string[];
+}
+
+interface Education {
+    degree: string,
+    institution: string,
+    graduationYear: string
+}
+interface Project {
+    name: string,
+    description: string,
+    technologies: string[]
+}
+
 interface Resume {
-        name: string,
-        email: string,
-        phone: string,
-        linkedin: string,
-        experience: string[],
-        skills: string[],
-        education: string[],
-        projects: string[]
-        summary?: string,
+    id: string,
+    template: string,
+    name: string,
+    email: string,
+    phone: string,
+    linkedin: string,
+    experience: Experience[],
+    skills: string[],
+    education: Education[],
+    projects: Project[]
+    summary?: string,
 }
 
 export const PdfViewer = ({

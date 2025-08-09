@@ -68,19 +68,19 @@ export const features = [
 
 export const templates = [
   {
-    title: "Modern Professional",
+    title: "Modern",
     description:
       "A clean, minimal layout with bold headings and subtle colors—ideal for corporate, tech, or finance roles.",
     link: "/resume.jpg",
   },
   {
-    title: "Creative Designer",
+    title: "Compact",
     description:
       "Visually engaging with stylish fonts and layout—perfect for designers, marketers, and creative professionals.",
     link: "/resume.jpg",
   },
   {
-    title: "Compact Classic",
+    title: "Classic",
     description:
       "Traditional single-column format optimized for readability—best for academic, legal, or government jobs.",
     link: "/resume.jpg",

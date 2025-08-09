@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const ResumeSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
-  template: { type: String, default: "professional" },
+  template: { type: String, default: "classic" },
   name: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },

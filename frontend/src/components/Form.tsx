@@ -92,7 +92,7 @@ export default function MyForm() {
           technologies: "",
         },
       ],
-      template: "professional",
+      template: "classic",
     },
   });
   const { control } = form;
@@ -215,9 +215,9 @@ export default function MyForm() {
                   className="flex flex-wrap gap-4"
                 >
                   {[
-                    ["Professional", "professional"],
-                    ["Creative", "creative"],
+                    ["Classic", "classic"],
                     ["Compact", "compact"],
+                    ["Modern", "modern"],
                   ].map(([label, value]) => (
                     <div key={value} className="flex items-center space-x-2">
                       <RadioGroupItem id={value} value={value} />

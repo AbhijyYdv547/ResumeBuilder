@@ -75,7 +75,7 @@ export default function MyForm() {
           location: "",
           startDate: "",
           endDate: "",
-          responsibilities: [""],
+          responsibilities: ["","",""],
         },
       ],
       education: [
@@ -92,7 +92,7 @@ export default function MyForm() {
           technologies: "",
         },
       ],
-      template: "professional",
+      template: "classic",
     },
   });
   const { control } = form;
@@ -215,9 +215,9 @@ export default function MyForm() {
                   className="flex flex-wrap gap-4"
                 >
                   {[
-                    ["Professional", "professional"],
-                    ["Creative", "creative"],
+                    ["Classic", "classic"],
                     ["Compact", "compact"],
+                    ["Modern", "modern"],
                   ].map(([label, value]) => (
                     <div key={value} className="flex items-center space-x-2">
                       <RadioGroupItem id={value} value={value} />
@@ -380,7 +380,7 @@ export default function MyForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
+                        <Input 
                           placeholder="e.g. Developed features using React"
                           {...field}
                         />
@@ -410,7 +410,7 @@ export default function MyForm() {
               location: "",
               startDate: "",
               endDate: "",
-              responsibilities: [""],
+              responsibilities: ["","",""],
             })
           }
         >

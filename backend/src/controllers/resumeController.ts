@@ -1,14 +1,13 @@
 import Resume from "@/models/Resume";
 import { Request, Response } from "express";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { buildResumePrompt } from "@/utils/buildResumePrompt";
 import { formatResumeInput } from "@/utils/formatResumeInput";
+import { geminiGeneration } from "@/utils/geminiGeneration";
 
 dotenv.config();
 
-const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const genResController = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -25,34 +24,34 @@ export const genResController = async (req: Request, res: Response): Promise<voi
       return;
     }
 
-    const {formattedExperience,formattedEducation,formattedProjects} = formatResumeInput({experience,education,projects})
-      
+    const { 
+      formattedExperience, 
+      formattedEducation, 
+      formattedProjects 
+    } = formatResumeInput({ experience, education, projects })
+
     const userSummary = summary?.trim()
-   
-    const prompt = buildResumePrompt({name,email,phone,linkedin,experience:formattedExperience,education:formattedEducation,skills,projects:formattedProjects,summary:userSummary})
 
-    const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-    });
+    const prompt = buildResumePrompt({ 
+      name, 
+      skills, 
+      summary: userSummary 
+    })
 
-    const resumeContent =
-      result.response.candidates?.[0]?.content?.parts?.[0]?.text;
+  //  const aiSummary = await geminiGeneration({ prompt });
+  // const cleanSummary = userSummary?.length
+  // ? userSummary
+  // : aiSummary?.trim() || "Passionate and results-driven professional.";
 
-    if(!resumeContent){
-      res.status(500).json({error: "Failed to generate Resume"})
-      return;
-    }
 
     const newResume = await Resume.create({
       userId: req.userId,
-      aiResponse: resumeContent,
       template,
       name,
       email,
       phone,
       linkedin,
-      summary: userSummary || "",
+      summary: userSummary,
       experience: formattedExperience,
       skills,
       education: formattedEducation,
@@ -62,7 +61,6 @@ export const genResController = async (req: Request, res: Response): Promise<voi
     res.status(200).json({
       id: newResume._id,
       template: newResume.template,
-      resumeData: {
         name,
         email,
         phone,
@@ -71,11 +69,10 @@ export const genResController = async (req: Request, res: Response): Promise<voi
         experience: formattedExperience,
         skills,
         education: formattedEducation,
-        projects: formattedProjects
-      }
+        projects: formattedProjects,
     });
     return;
-  } catch (error: any) {
+  } catch (error:any) {
     console.error("Error generating resume:", error);
     res.status(500).json({ error: error.message || "Internal Server Error" });
     return;
@@ -103,9 +100,9 @@ export const getSpecificController = async (req: Request, res: Response) => {
     }
     const resume = await Resume.findOne({ _id: id, userId: req.userId });
     if (!resume) {
-  res.status(404).json({ error: "Resume not found" });
-  return;
-}
+      res.status(404).json({ error: "Resume not found" });
+      return;
+    }
     res.json(resume);
   } catch (error: any) {
     res.status(500).json({ error: error.message });

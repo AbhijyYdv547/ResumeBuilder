@@ -29,7 +29,9 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: "bold",
         textTransform: "uppercase",
-        borderBottom: "1 solid #000",
+        borderBottomWidth: 1,
+        borderBottomColor: "#000",
+        borderBottomStyle: "solid",
         paddingBottom: 2,
         marginBottom: 6,
     },
@@ -73,12 +75,15 @@ const ResumeTemplateClassic = ({ resume }: { resume: Resume }) => (
             )}
 
             {/* Skills */}
+            {Array.isArray(resume.skills) && resume.skills.length > 0 && (
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Skills</Text>
                 <Text>{resume.skills.join(", ")}</Text>
             </View>
+            )}
 
             {/* Experience */}
+            {Array.isArray(resume.experience) && resume.experience.length > 0 && (
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Experience</Text>
                 {resume.experience.map((exp, i) => (
@@ -96,8 +101,10 @@ const ResumeTemplateClassic = ({ resume }: { resume: Resume }) => (
                     </View>
                 ))}
             </View>
+            )}
 
             {/* Education */}
+            {Array.isArray(resume.education) && resume.education.length > 0 && (
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Education</Text>
                 {resume.education.map((edu, i) => (
@@ -106,8 +113,10 @@ const ResumeTemplateClassic = ({ resume }: { resume: Resume }) => (
                     </Text>
                 ))}
             </View>
+            )}
 
             {/* Projects */}
+            {Array.isArray(resume.projects) && resume.projects.length > 0 && (
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Projects</Text>
                 {resume.projects.map((proj, i) => (
@@ -119,6 +128,7 @@ const ResumeTemplateClassic = ({ resume }: { resume: Resume }) => (
                     </View>
                 ))}
             </View>
+            )}
         </Page>
     </Document>
 );

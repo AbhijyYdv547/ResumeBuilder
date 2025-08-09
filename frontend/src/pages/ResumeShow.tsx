@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import ResumeList from "../components/ResumeList";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Resume } from "@/types/ResumeTypes";
 
 const ResumeShow = () => {
-  const [resumes, setResumes] = useState([]);
+  const [resumes, setResumes] = useState<Resume[]>([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +39,9 @@ const ResumeShow = () => {
 
       <div className="w-full max-w-6xl">
         {resumes.length > 0 ? (
-          <ResumeList resumes={resumes} />
+          <ResumeList
+            resumes={resumes}
+          />
         ) : (
           <p className="text-gray-500 dark:text-gray-300">Loading or no resumes found.</p>
         )}

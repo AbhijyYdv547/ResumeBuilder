@@ -11,10 +11,10 @@ const Dashboard = () => {
         <ResizableSide />
 
         <div className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-5xl mx-auto bg-black p-8 rounded-xl shadow-lg dark:bg-white">
+
             <Outlet />
             <Footer />
-          </div>
+
         </div>
       </div>
 

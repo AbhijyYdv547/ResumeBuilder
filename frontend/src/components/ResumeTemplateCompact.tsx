@@ -1,9 +1,6 @@
 import { Resume } from "@/types/ResumeTypes";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
-
-
-
 const styles = StyleSheet.create({
     page: { flexDirection: "row", fontSize: 11, fontFamily: "Helvetica" },
     sidebar: {
@@ -34,6 +31,7 @@ export const ResumeTemplateCompact = ({ resume }:{resume:Resume}) => (
                 <Text>{resume.phone}</Text>
                 <Text>{resume.linkedin}</Text>
 
+                
                 <Text style={styles.sectionTitle}>Skills</Text>
                 {resume.skills.map((skill, i) => (
                     <Text key={i} style={styles.listItem}>• {skill}</Text>

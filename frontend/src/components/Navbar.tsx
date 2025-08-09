@@ -36,7 +36,7 @@ export default function ResizableNav() {
             <NavbarButton
               variant="primary"
               className="bg-slate-200 hover:bg-gray-50"
-              href="https://github.com/AbhijyYdv547"
+              href="https://github.com/AbhijyYdv547/ResumeBuilder"
             >
               <img src={"/git.svg"} alt="" width={30} height={30} />
             </NavbarButton>

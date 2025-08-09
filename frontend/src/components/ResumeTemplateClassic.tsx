@@ -1,36 +1,6 @@
+import { Resume } from "@/types/ResumeTypes";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
-interface Experience {
-    jobTitle: string;
-    company: string;
-    location?: string;
-    startDate: string;
-    endDate: string;
-    responsibilities: string[];
-}
-interface Education {
-    degree: string;
-    institution: string;
-    graduationYear: string;
-}
-interface Project {
-    name: string;
-    description: string;
-    technologies: string[];
-}
-interface Resume {
-    id: string;
-    template: string;
-    name: string;
-    email: string;
-    phone: string;
-    linkedin: string;
-    experience: Experience[];
-    skills: string[];
-    education: Education[];
-    projects: Project[];
-    summary?: string;
-}
 
 const styles = StyleSheet.create({
     page: {

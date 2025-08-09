@@ -130,7 +130,10 @@ const ResumeTemplateModern = ({ resume }: { resume: Resume }) => (
                     <View key={i} style={{ marginBottom: 6 }}>
                         <Text style={styles.jobTitle}>{proj.name}</Text>
                         <Text>
-                            {proj.description} [{proj.technologies.join(", ")}]
+                            {proj.description}
+                        </Text>
+                        <Text style={{ fontSize: 9 }}>
+                            Tech: {proj.technologies.join(", ")}
                         </Text>
                     </View>
                 ))}

@@ -75,7 +75,7 @@ export default function MyForm() {
           location: "",
           startDate: "",
           endDate: "",
-          responsibilities: [""],
+          responsibilities: ["","",""],
         },
       ],
       education: [
@@ -380,7 +380,7 @@ export default function MyForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
+                        <Input 
                           placeholder="e.g. Developed features using React"
                           {...field}
                         />
@@ -410,7 +410,7 @@ export default function MyForm() {
               location: "",
               startDate: "",
               endDate: "",
-              responsibilities: [""],
+              responsibilities: ["","",""],
             })
           }
         >

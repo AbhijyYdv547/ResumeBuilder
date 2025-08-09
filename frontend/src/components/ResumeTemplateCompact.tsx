@@ -82,7 +82,7 @@ export const ResumeTemplateCompact = ({ resume }:{resume:Resume}) => (
                 {resume.experience.map((exp, i) => (
                     <View key={i} style={{ marginBottom: 8 }}>
                         <Text style={{ fontWeight: "bold" }}>{exp.jobTitle} - {exp.company}</Text>
-                        <Text style={{ fontSize: 9, color: "#555" }}>
+                        <Text style={{ fontSize: 9, color: "#555" ,marginBottom:4}}>
                             {exp.startDate} - {exp.endDate} {exp.location ? `| ${exp.location}` : ""}
                         </Text>
                         {exp.responsibilities.map((res, idx) => (
@@ -100,9 +100,9 @@ export const ResumeTemplateCompact = ({ resume }:{resume:Resume}) => (
 
                 <Text style={styles.sectionTitle}>Projects</Text>
                 {resume.projects.map((proj, i) => (
-                    <View key={i}>
+                    <View key={i} style={{marginBottom:6}}>
                         <Text style={{ fontWeight: "bold" }}>{proj.name}</Text>
-                        <Text>{proj.description}</Text>
+                        <Text style={{marginBottom:4}}>{proj.description}</Text>
                         <Text style={{ fontSize: 9, color: "#555" }}>
                             Tech: {proj.technologies.join(", ")}
                         </Text>

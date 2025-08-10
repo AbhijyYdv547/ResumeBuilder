@@ -5,8 +5,8 @@ import { BlobProvider } from "@react-pdf/renderer";
 import { Resume } from "@/types/ResumeTypes";
 import { Download, Trash } from "lucide-react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import { useAuthToken } from "@/hooks/useAuthToken";
 
 
 
@@ -20,40 +20,35 @@ export const PdfViewer = ({
         onDelete?: (id: string) => void;
 }) => {
 
-    const navigate = useNavigate();
+      const { getToken } = useAuthToken();
+
 
     const delFunc = ()=>{
-
-        if (!resume?.id) {
-            console.error("Resume ID is missing!");
-            return;
-        }
-    
-        const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/login");
-            return;
-        }
+        try{
+            if (!resume?.id) return;
         
-        axios
-        .delete(import.meta.env.VITE_BACKEND_URL + `/api/resumes/${resume.id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(() => {
-            onDelete?.(resume.id);
+            const token = getToken();
+            if (!token) return;
+            
+            axios
+            .delete(import.meta.env.VITE_BACKEND_URL + `/api/resumes/${resume.id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+            .then(() => {
+                onDelete?.(resume.id);
+                toast({
+                    title: "Resume Deleted",
+                    variant: "default",
+                });
+            })
+            
+        } catch (error: unknown) {
+            console.error("Caught an error:", error);
             toast({
-                title: "Resume Deleted",
-                variant: "default",
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-            toast({
-                title: "Resume Couln't be deleted",
+                title: "Failed to delete resume.",
                 variant: "destructive",
             });
-        });
-
+        }
     }
 
 

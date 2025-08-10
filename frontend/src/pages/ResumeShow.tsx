@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import ResumeList from "../components/ResumeList";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Resume } from "@/types/ResumeTypes";
+import { useAuthToken } from "@/hooks/useAuthToken";
+import { toast } from "@/hooks/use-toast";
 
 const ResumeShow = () => {
   const [resumes, setResumes] = useState<Resume[]>([]);
@@ -10,25 +11,27 @@ const ResumeShow = () => {
   const handleDelete = (id: string) => {
     setResumes((prev) => prev.filter((resume) => resume.id !== id)); 
   };
+  const { getToken } = useAuthToken();
   
-  const navigate = useNavigate();
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
+    try{
+      const token = getToken();
+      if (!token) return;
 
-    axios
-      .get(import.meta.env.VITE_BACKEND_URL + "/api/resumes", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        console.log("Raw resume response:", res.data);
-        setResumes(res.data);
-      })
-      .catch((err) => console.error("Error fetching resumes:", err));
-  },[]);
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/resumes", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          setResumes(res.data);
+        })
+    } catch (e: unknown) {
+      console.log(e);
+      toast({
+        title: "Failed to show Resume. Please try again.",
+        variant: "destructive",
+      });
+    }},[]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black flex flex-col items-center px-6 py-10">

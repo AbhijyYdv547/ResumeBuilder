@@ -16,7 +16,6 @@ export const genResController = async (req: Request, res: Response): Promise<voi
 
     if (!name || !email || !phone || !linkedin || !skills || !education) {
       res.status(400).json({ error: "Missing required fields" });
-      console.log("Missing fields")
       return;
     }
 
@@ -62,7 +61,6 @@ export const genResController = async (req: Request, res: Response): Promise<voi
     res.status(200).json(normalizeResume(newResume));
     return;
   } catch (error:any) {
-    console.error("Error generating resume:", error);
     res.status(500).json({ error: error.message || "Internal Server Error" });
     return;
   }

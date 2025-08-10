@@ -19,6 +19,7 @@ import { useFieldArray } from "react-hook-form";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { useAuthToken } from "@/hooks/useAuthToken";
 
 const formSchema = z.object({
   name: z.string().min(5).max(15),
@@ -59,6 +60,9 @@ const formSchema = z.object({
 });
 
 export default function MyForm() {
+
+    const { getToken } = useAuthToken();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -103,18 +107,10 @@ export default function MyForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log("Submitting Form Data:", values);
+      const token = getToken();
+      if (!token) return;
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast({
-          title: "User not authenticated!",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const response = await axios.post(
+      await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/resumes/generate",
         values,
         {
@@ -124,8 +120,6 @@ export default function MyForm() {
           },
         },
       );
-
-      console.log("Resume Generated Successfully:", response.data);
       toast({
         title: "Resume generated successfully!",
         variant: "default",

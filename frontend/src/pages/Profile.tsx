@@ -3,11 +3,11 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
+import { useAuthToken } from "@/hooks/useAuthToken";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import z from "zod";
 
 
@@ -29,8 +29,7 @@ const formSchema = z.object({
 
 const Profile = () => {
   const [profile, setProfile] = useState<ProfileProps>();
-
-  const navigate = useNavigate();
+  const { getToken } = useAuthToken();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,16 +37,8 @@ const Profile = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     try {
-      console.log("Submitting Form Data:", values);
-
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast({
-          title: "User not authenticated!",
-          variant: "destructive",
-        });
-        return;
-      }
+      const token = getToken();
+      if (!token) return;
 
       axios
         .put(import.meta.env.VITE_BACKEND_URL + "/api/profile/update", 
@@ -73,27 +64,32 @@ const Profile = () => {
 }
 
 useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-    return;
+  try{
+    const token = getToken();
+    if (!token) return;
+  
+    axios
+      .get(import.meta.env.VITE_BACKEND_URL + "/api/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setProfile(res.data);
+        form.reset({
+          name: res.data.name,
+          email: res.data.email,
+          location: res.data.location,
+          bio: res.data.bio,
+        });
+      })
+
+  } catch (error: unknown) {
+    console.error("Caught an error:", error);
+    toast({
+      title: "Failed to generate profile.",
+      variant: "destructive",
+    });
   }
 
-  axios
-    .get(import.meta.env.VITE_BACKEND_URL + "/api/profile", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => {
-      console.log("Raw resume response:", res.data);
-      setProfile(res.data);
-      form.reset({
-        name: res.data.name,
-        email: res.data.email,
-        location: res.data.location,
-        bio: res.data.bio,
-      });
-    })
-    .catch((err) => console.error("Error fetching resumes:", err));
 }, []);
 
 

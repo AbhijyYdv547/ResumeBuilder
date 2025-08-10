@@ -24,7 +24,6 @@ export const userMiddleware = (req: Request, res: Response, next: NextFunction):
     req.userId = decoded.userId;
     next(); 
   } catch (error) {
-    console.error("JWT Error:", error);
     res.status(403).json({ message: "Invalid or expired token" });
   }
 };

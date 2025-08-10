@@ -36,8 +36,8 @@ const AuthPage = ({
 
         <form className="my-8" onSubmit={onSubmit}>
           {login ? null : (
-            <LabelInputContainer className="mb-4">
-              <Label htmlFor="name">Name</Label>
+            <LabelInputContainer className="mb-4 ">
+              <Label htmlFor="name" className="text-white">Name</Label>
               <Input
                 id="name"
                 placeholder="Tyler"
@@ -49,7 +49,7 @@ const AuthPage = ({
           )}
 
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="email">Email Address</Label>
+            <Label htmlFor="email" className="text-white">Email Address</Label>
             <Input
               id="email"
               placeholder="projectmayhem@fc.com"
@@ -59,7 +59,7 @@ const AuthPage = ({
             />
           </LabelInputContainer>
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-white">Password</Label>
             <Input
               id="password"
               placeholder="••••••••"

@@ -8,6 +8,14 @@ dotenv.config();
 export const registerController = async (req:Request, res:Response) => {
   try {
     const { name, email, password } = req.body;
+    const trimmedPassword = password.trim();
+    const regex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/;
+
+    if (!regex.test(trimmedPassword)) {
+        res.status(400).json({ message: 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.' });
+        return;
+    }
+
     const existingUser = await User.findOne({email});
     if(existingUser){
       res.status(409).json({error: "Email already in use"});

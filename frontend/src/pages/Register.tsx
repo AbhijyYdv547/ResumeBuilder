@@ -33,7 +33,7 @@ const Register = () => {
     } catch (e: unknown) {
       console.log(e);
       toast({
-        title: "Registration failed. Please try again.",
+        title: "Registration failed. Please try again. Make sure the password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
         variant: "destructive",
       });
     }

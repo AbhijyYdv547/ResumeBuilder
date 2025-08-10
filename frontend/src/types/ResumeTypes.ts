@@ -19,7 +19,8 @@ export interface Project {
 }
 
 export interface Resume {
-    id:string,
+    id: string;          
+  userId: string;
     template:string,
     name: string,
     email: string,

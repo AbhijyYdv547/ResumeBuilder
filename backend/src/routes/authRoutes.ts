@@ -21,5 +21,8 @@ router.post("/register",authLimiter,validate(registerSchema), registerController
 //login
 router.post("/login",authLimiter,validate(loginSchema), loginController);
 
+//google
+router.post("/google",authLimiter,)
+
 
 export default router;

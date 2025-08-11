@@ -8,10 +8,13 @@ import Form from "@/components/Form";
 import Profile from "@/pages/Profile";
 import { ToastProvider } from "@/components/ui/toast";
 import { Toaster } from "@/components/ui/toaster";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const App = () => {
+
   return (
     <div>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
       <ToastProvider>
         <BrowserRouter>
           <Routes>
@@ -27,6 +30,7 @@ const App = () => {
         </BrowserRouter>
         <Toaster />
       </ToastProvider>
+      </GoogleOAuthProvider>
     </div>
   );
 };

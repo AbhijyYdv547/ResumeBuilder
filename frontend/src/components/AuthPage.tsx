@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
-import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import { IconBrandGoogle } from "@tabler/icons-react";
 import React, { FormEvent, RefObject } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
 
 interface AuthPageProps {
   nameRef?: RefObject<HTMLInputElement | null>;
@@ -21,6 +22,25 @@ const AuthPage = ({
   onSubmit,
 }: AuthPageProps) => {
   const navigate = useNavigate();
+
+  const responseGoogle = async (authResult)=>{
+    try {
+      if(authResult['code']){
+        
+      }
+      console.log(authResult);
+    } catch (err) {
+      console.error("Error while requesting google code: ",err)
+    }
+  }
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: responseGoogle,
+    onError: responseGoogle,
+    flow: 'auth-code'
+  })
+
+
 
   return (
     <div className="min-h-screen min-w-screen bg-[#262626] flex justify-center items-center">
@@ -77,25 +97,20 @@ const AuthPage = ({
             <BottomGradient />
           </button>
 
-          <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent dark:via-neutral-300 to-transparent via-neutral-700" />
-
-          <div className="flex justify-evenly items-center">
-            <button className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md dark:bg-gray-50 px-4 font-medium text-black bg-zinc-900 shadow-[0px_0px_1px_1px_#262626]">
-              <IconBrandGithub className="h-4 w-4 dark:text-neutral-800 text-neutral-300" />
-              <span className="text-sm dark:text-neutral-700 text-neutral-300">
-                GitHub
-              </span>
-              <BottomGradient />
-            </button>
-            <button className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md dark:bg-gray-50 px-4 font-medium text-black bg-zinc-900 shadow-[0px_0px_1px_1px_#262626]">
-              <IconBrandGoogle className="h-4 w-4 dark:text-neutral-800 text-neutral-300" />
-              <span className="text-sm dark:text-neutral-700 text-neutral-300">
-                Google
-              </span>
-              <BottomGradient />
-            </button>
-          </div>
         </form>
+        <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent dark:via-neutral-300 to-transparent via-neutral-700" />
+
+        <div className="flex justify-evenly items-center my-8">
+          <button className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md dark:bg-gray-50 px-4 font-medium text-black bg-zinc-900 shadow-[0px_0px_1px_1px_#262626]"
+            onClick={googleLogin}
+          >
+            <IconBrandGoogle className="h-4 w-4 dark:text-neutral-800 text-neutral-300" />
+            <span className="text-sm dark:text-neutral-700 text-neutral-300">
+              Google
+            </span>
+            <BottomGradient />
+          </button>
+        </div>
 
         {login ? (
           <div className="text-center text-sm text-gray-50">

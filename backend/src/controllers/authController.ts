@@ -59,3 +59,12 @@ export const loginController = async (req:Request, res:Response) => {
     res.status(500).json({ error: error.message });
   }
 }
+
+
+export const googleLogin = (req:Request,res:Response)=>{
+  try {
+    
+  } catch (error) {
+    
+  }
+}

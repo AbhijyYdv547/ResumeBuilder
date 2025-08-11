@@ -10,6 +10,7 @@ import {
   IconUserBolt,
 } from "@tabler/icons-react";
 
+
 export function ResizableSide() {
   const navigate = useNavigate();
   const logout = () => {
@@ -71,11 +72,10 @@ export function ResizableSide() {
 
 export const Logo = () => {
   return (
-    <a
-      href="#"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+    <div
+    className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-white" />
+      <img src="/logo.svg" alt="" className="h-4 w-4" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -83,7 +83,7 @@ export const Logo = () => {
       >
         Resume Builder
       </motion.span>
-    </a>
+    </div>
   );
 };
 
@@ -93,7 +93,9 @@ export const LogoIcon = () => {
       href="#"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-white"
     >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-white" />
+      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-white flex items-center justify-center">
+        <img src="/logo-black.svg" alt="" className="h-5 w-4 text-black"/>
+      </div>
     </a>
   );
 };

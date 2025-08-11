@@ -34,8 +34,8 @@ const ResumeShow = () => {
     }},[]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black flex flex-col items-center px-6 py-10">
-      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mt-6 mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black flex flex-col items-center p-4 py-10">
+      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mt-6 mb-8 text-center">
         📜 Your Resumes
       </h2>
 

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
+import { googleAuth } from "@/utils/api";
 
 interface AuthPageProps {
   nameRef?: RefObject<HTMLInputElement | null>;
@@ -23,10 +24,17 @@ const AuthPage = ({
 }: AuthPageProps) => {
   const navigate = useNavigate();
 
-  const responseGoogle = async (authResult)=>{
+  const responseGoogle = async (authResult: { code?: string })=>{
     try {
       if(authResult['code']){
-        
+        const result = await googleAuth(authResult['code']);
+        const { email,name } = result.data.user;
+        const token = result.data.token;
+        const obj = {name,email,token};
+        localStorage.setItem('user-info',JSON.stringify(obj));
+        console.log('result.data.user --- ', result.data.user)
+        console.log(token);
+        navigate('/dashboard')
       }
       console.log(authResult);
     } catch (err) {
@@ -34,9 +42,13 @@ const AuthPage = ({
     }
   }
 
+  const errorHandler = (err: unknown) => {
+    console.error("Google login error: ", err);
+  };
+
   const googleLogin = useGoogleLogin({
     onSuccess: responseGoogle,
-    onError: responseGoogle,
+    onError: errorHandler,
     flow: 'auth-code'
   })
 

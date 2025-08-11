@@ -2,7 +2,7 @@ import express from "express";
 import rateLimit from "express-rate-limit"
 import { validate } from "@/middlewares/validateMiddleware";
 import { loginSchema, registerSchema } from "@/validators/authSchema";
-import { loginController, registerController } from "@/controllers/authController";
+import { googleLogin, loginController, registerController } from "@/controllers/authController";
 
 
 const router = express.Router();
@@ -20,6 +20,9 @@ router.post("/register",authLimiter,validate(registerSchema), registerController
 
 //login
 router.post("/login",authLimiter,validate(loginSchema), loginController);
+
+//google
+router.post("/google",authLimiter,googleLogin)
 
 
 export default router;

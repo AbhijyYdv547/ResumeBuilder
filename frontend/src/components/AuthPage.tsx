@@ -28,15 +28,10 @@ const AuthPage = ({
     try {
       if(authResult['code']){
         const result = await googleAuth(authResult['code']);
-        const { email,name } = result.data.user;
         const token = result.data.token;
-        const obj = {name,email,token};
-        localStorage.setItem('user-info',JSON.stringify(obj));
-        console.log('result.data.user --- ', result.data.user)
-        console.log(token);
+        localStorage.setItem("token",token);
         navigate('/dashboard')
       }
-      console.log(authResult);
     } catch (err) {
       console.error("Error while requesting google code: ",err)
     }

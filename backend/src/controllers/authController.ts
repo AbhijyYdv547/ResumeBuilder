@@ -16,6 +16,10 @@ interface GoogleUser {
 export const registerController = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+      res.status(400).json({ error: "All fields are required" });
+      return;
+    }
     const trimmedPassword = password.trim();
     const regex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/;
 
@@ -26,9 +30,12 @@ export const registerController = async (req: Request, res: Response) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(409).json({ error: "Email already in use" });
-      return;
+      if (existingUser.authProvider === 'google') {
+        return res.status(409).json({ error: "Email already registered via Google. Please use Google Login." });
+      }
+      return res.status(409).json({ error: "Email already in use" });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email, password: hashedPassword });
 
@@ -48,7 +55,19 @@ export const loginController = async (req: Request, res: Response) => {
     }
     const user = await User.findOne({ email });
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user) {
+      res.status(401).json({ error: "Invalid credentials" });
+      return;
+    }
+
+    if (user.authProvider === 'google') {
+      res.status(400).json({ error: "Account registered via Google. Use Google Login." });
+      return;
+    }
+
+
+    const isMatch = await bcrypt.compare(password, user.password || '');
+    if (!isMatch) {
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }
@@ -80,10 +99,6 @@ export const googleLogin = async (req: Request, res: Response) => {
     const { tokens } = await oauth2client.getToken(code);
     oauth2client.setCredentials(tokens);
 
-    console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-    console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
-
-
     const userRes = await axios.get<GoogleUser>(
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokens.access_token}`
     )
@@ -94,10 +109,15 @@ export const googleLogin = async (req: Request, res: Response) => {
       res.status(400).json({ error: "Email and Password are required" });
       return;
     }
+
     let user = await User.findOne({ email });
+    
     if (!user) {
-      user = await User.create({ name, email })
-    }
+      user = await User.create({ name, email, authProvider: 'google' });
+    }else if (user.authProvider === 'local') {
+  res.status(400).json({ error: "This email is already registered with a password. Please use email/password login." });
+  return;
+}
 
     if (!process.env.JWT_SECRET) {
       res.status(500).json({ error: "JWT secret not set" })

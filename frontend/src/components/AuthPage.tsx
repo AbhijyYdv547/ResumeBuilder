@@ -1,11 +1,14 @@
 import { cn } from "@/lib/utils";
-import { IconBrandGoogle } from "@tabler/icons-react";
+import { IconArrowLeft, IconBrandGoogle } from "@tabler/icons-react";
 import React, { FormEvent, RefObject } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { googleAuth } from "@/utils/api";
+import { useRedirectIfLoggedIn } from "@/hooks/useRedirectIfLoggedIn";
+import { Button } from "@/components/ui/button";
+
 
 interface AuthPageProps {
   nameRef?: RefObject<HTMLInputElement | null>;
@@ -23,6 +26,8 @@ const AuthPage = ({
   onSubmit,
 }: AuthPageProps) => {
   const navigate = useNavigate();
+
+  useRedirectIfLoggedIn();
 
   const responseGoogle = async (authResult: { code?: string })=>{
     try {
@@ -52,14 +57,21 @@ const AuthPage = ({
   return (
     <div className="min-h-screen min-w-screen bg-[#262626] flex justify-center items-center">
       <div className="shadow-input mx-auto w-full max-w-md rounded-none dark:bg-white p-4 md:rounded-2xl md:p-8 bg-black">
-        <h2 className="text-xl font-bold dark:text-neutral-800 text-neutral-200 text-center">
-          {login ? "Welcome back 😎 " : "Welcome to Resume Builder😊"}
-        </h2>
-        <p className="mt-2 max-w-sm text-sm dark:text-neutral-800 text-neutral-200 text-center">
-          {login
-            ? "Login to Resume Builder"
-            : "Start your journey by Registering"}
-        </p>
+        <div className="flex items-center">
+          <div>
+            <Button variant={"default"} className="bg-zinc-700" onClick={()=>navigate('/')}><IconArrowLeft/></Button>
+          </div>
+          <div className="flex-1 text-center">
+            <h2 className="text-xl font-bold dark:text-neutral-800 text-neutral-200 text-center">
+              {login ? "Welcome back 😎 " : "Welcome to Resume Builder😊"}
+            </h2>
+            <p className="mt-2 max-w-sm mx-auto text-sm dark:text-neutral-800 text-neutral-200 text-center">
+              {login
+                ? "Login to Resume Builder"
+                : "Start your journey by Registering"}
+            </p>
+          </div>
+        </div>
 
         <form className="my-8" onSubmit={onSubmit}>
           {login ? null : (

@@ -129,16 +129,55 @@ docker-compose down -v
 | ------ | ----------------------- | ------------------------ |
 | POST   | `/api/auth/register`    | Register a user          |
 | POST   | `/api/auth/login`       | Login user               |
+| POST   | `/api/auth/google`      | Login user using OAuth   |
 | POST   | `/api/resumes/generate` | Generate resume data/PDF |
 | GET    | `/api/resumes`          | Get all resumes          |
 | GET    | `/api/resumes/:id`      | Get specific resume      |
 | DELETE | `/api/resumes/:id`      | Delete specific resume   |
+| GET    | `/api/profile/`         | Get user's profile       |
+| PUT    | `/api/profile/update`   | Update user's profile    |
 
 ---
 
 ## 📷 Screenshots
 
-*(Add your existing screenshots here)*
+<details>
+<summary>Landing Page</summary>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b196a58f-ea42-4a21-ae72-efc9195722e7" width="600"/>
+
+</p>
+</details>
+
+<details>
+<summary>Login and Signup Pages</summary>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1c417ff5-10d9-40fa-af42-53cc10b5eaa4" width="300"/>
+  <img src="https://github.com/user-attachments/assets/8f30ba45-bbb1-42e5-8264-1bf9b01fae50" width="300"/>
+</p>
+</details>
+
+<details>
+<summary>Resume Generation Form Dashboard</summary>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7d27a918-34ca-47c9-a5e1-5422172fd7a6" width="600"/>
+</p>
+</details>
+
+<details>
+<summary>Resume Showing Page</summary>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/dfe9f277-f5f3-4f23-9702-1704797a3238" width="600"/>
+</p>
+</details>
+
+<details>
+<summary>User Profile Page</summary>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d0b74dbf-ef90-471d-b9d7-c0fe71195d1a" width="600"/>
+</p>
+</details>
+
 
 ---
 

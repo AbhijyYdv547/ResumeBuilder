@@ -132,7 +132,6 @@ export const googleLogin = async (req: Request, res: Response) => {
     })
 
   } catch (error) {
-    console.error("Google OAuth Error:", error); 
     res.status(500).json({
       message: "Internal Server Error"
     })

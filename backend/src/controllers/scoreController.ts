@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 export const genScoreController = async (req: Request, res: Response) => {
   const { username } = req.body;
   try {    
+
     const profileData = await getUserGithub(username);
 
     if (!profileData) {
@@ -16,11 +17,13 @@ export const genScoreController = async (req: Request, res: Response) => {
       return;
     }
 
+
     const scorePrompt = genScorePrompt({ profileData });
     const score = await geminiGeneration({prompt: scorePrompt})
 
     const advicePrompt = genAdvicePrompt({ profileData });
     const advice = await geminiGeneration({prompt:advicePrompt})
+
 
     const result = {
       score,
@@ -30,7 +33,6 @@ export const genScoreController = async (req: Request, res: Response) => {
     res.status(200).json(result);
 
   } catch (error) {
-    console.log("Internal Server Error!", error);
     res.status(500).json({
       message: "Some error occured while generating score"
     })

@@ -49,6 +49,5 @@ export const getUserGithub = async (username: string) => {
     };
   } catch (error) {
     console.log(error)
-    console.log("Internal Server Error!")
   }
 };

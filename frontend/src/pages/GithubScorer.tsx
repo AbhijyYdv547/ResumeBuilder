@@ -49,13 +49,13 @@ const GithubScorer = () => {
         )
         setResult(response.data);
         toast({
-            title: "Profile Data Fetched Successfully!",
+            title: "Github Score Generated Successfully!",
             variant: "default",
         });
   }catch (error) {
         console.error("Caught an error:", error);
         toast({
-            title: "Failed to fetch profile data.",
+            title: "Failed to Generate Github Score",
             variant: "destructive",
         });
   }
@@ -68,8 +68,8 @@ const GithubScorer = () => {
               Find Your Github Score
           </h2>
           <div className="flex flex-col items-center justify-center">
-              <div className="bg-gray-800 rounded-full h-40 w-40 flex justify-center items-center">
-                  <img height="60%" width="60%" src="/logo.svg" alt="" />
+              <div className="bg-gray-300 rounded-full h-40 w-40 flex justify-center items-center">
+                  <img height="60%" width="60%" src="/github-sign.png" alt="" />
               </div>
 
 
@@ -104,12 +104,22 @@ const GithubScorer = () => {
 
 
           {result !== undefined ? (
-              <div className="text-center mt-10">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Result</h2>
-                  <p className="text-lg font-semibold text-gray-800">Score: {result.score}</p>
-                  <p className="text-md text-gray-700 mt-2 italic">"{result.advice}"</p>
+              <div className="mt-10 flex justify-center">
+                  <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full text-center border border-gray-200">
+                      <h2 className="text-2xl font-bold text-gray-900 mb-3">Profile Evaluation</h2>
+
+                      <div className="text-5xl font-extrabold text-blue-600 mb-2">
+                          {result.score}/10
+                      </div>
+                      <p className="text-sm text-gray-500 mb-4">Overall Score</p>
+
+                      <blockquote className="italic text-gray-700 border-l-4 border-blue-400 pl-4">
+                          “{result.advice}”
+                      </blockquote>
+                  </div>
               </div>
           ) : null}
+
 
           
     </div>

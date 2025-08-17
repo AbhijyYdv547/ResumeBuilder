@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import {
   IconArrowLeft,
   IconBrandTabler,
+  IconGitBranch,
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
+
 
 
 export function ResizableSide() {
@@ -34,6 +36,11 @@ export function ResizableSide() {
       label: "Resume",
       func: () => navigate("/dashboard/resumes"),
       icon: <IconSettings className="h-5 w-5 shrink-0 text-neutral-200" />,
+    },
+    {
+      label: "Github Scorer",
+      func: () => navigate("/dashboard/scorer"),
+      icon: <IconGitBranch className="h-5 w-5 shrink-0 text-neutral-200" />,
     },
     {
       label: "Logout",

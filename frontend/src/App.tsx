@@ -9,6 +9,7 @@ import Profile from "@/pages/Profile";
 import { ToastProvider } from "@/components/ui/toast";
 import { Toaster } from "@/components/ui/toaster";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import GithubScorer from "@/pages/GithubScorer";
 
 const App = () => {
 
@@ -25,6 +26,7 @@ const App = () => {
               <Route index element={<Form />} />
               <Route path="resumes" element={<ResumeShow />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="scorer" element={<GithubScorer />} />
             </Route>
           </Routes>
         </BrowserRouter>

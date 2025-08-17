@@ -4,7 +4,10 @@ import { genScoreController } from "@/controllers/scoreController";
 const router = express.Router();
 
 
-router.post("/generate", userMiddleware, genScoreController);
+router.post("/", userMiddleware, genScoreController);
+router.get("/test", (req, res) => {
+  res.status(200).json({ message: "Score route is working" });
+});
 
 
 

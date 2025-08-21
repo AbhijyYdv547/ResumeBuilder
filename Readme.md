@@ -178,6 +178,12 @@ docker-compose down -v
 </p>
 </details>
 
+<details>
+<summary>Github Score Page</summary>
+<p align="center">
+<img src="https://github.com/user-attachments/assets/925768e3-9aac-4a45-aac6-0ac0fa2a2490" width="600" />
+</p>
+</details>
 
 ---
 

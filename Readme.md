@@ -1,24 +1,24 @@
-# 📝 Resume Builder — Dockerized
+# Resume Builder 
 
 A full-stack **Resume Builder** application that allows users to register, log in, fill in their resume details, preview their resume, and download a professional PDF version — all through a clean and intuitive UI. Built using the **MERN stack** (MongoDB, Express.js, React/Next.js, Node.js).
 
-This version is fully **Dockerized** — both frontend and backend have their own `Dockerfile`s, and you can easily run the whole stack using the provided `docker-compose.yml`.
+This version is fully **Dockerized** — both frontend and backend have their own `Dockerfile`, and you can easily run the whole stack using the provided `docker-compose.yml`.
 
 ---
 
-## 🚀 Features
+## Features
 
-* 🔐 User authentication (JWT)
-* 🧾 Fill and save resume details (name, education, experience, etc.)
-* 👁️ Live resume preview as you type
-* 📄 Download as a styled PDF
-* 🎨 Responsive UI (Tailwind CSS)
-* 📦 REST API with MongoDB integration
-* 🐳 Fully containerized setup
+* User authentication (JWT)
+* Fill and save resume details (name, education, experience, etc.)
+* Live resume preview as you type
+* Download as a styled PDF
+* Responsive UI (Tailwind CSS)
+* REST API with MongoDB integration
+* Fully containerized setup
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - React.js or Next.js
@@ -35,7 +35,7 @@ This version is fully **Dockerized** — both frontend and backend have their ow
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 resume-builder/
@@ -51,7 +51,7 @@ resume-builder/
 
 ## ⚙️ Setup
 
-### 1️⃣ Local Setup
+### 1. Local Setup
 
 ####  Prerequisites
 
@@ -91,7 +91,7 @@ Visit the app at http://localhost:5173
 ```
 
 
-### 2️⃣ Run with Docker
+### 2. Run with Docker
 
 ```bash
 ## Add secrets in .docker.env file inside backend/ with the following:
@@ -123,7 +123,7 @@ docker-compose down -v
 ---
 
 
-## 📌 API Endpoints
+## API Endpoints
 
 | Method | Endpoint                | Description              |
 | ------ | ----------------------- | ------------------------ |
@@ -139,7 +139,7 @@ docker-compose down -v
 
 ---
 
-## 📷 Screenshots
+## Screenshots
 
 <details>
 <summary>Landing Page</summary>
@@ -178,12 +178,18 @@ docker-compose down -v
 </p>
 </details>
 
+<details>
+<summary>Github Score Page</summary>
+<p align="center">
+<img src="https://github.com/user-attachments/assets/925768e3-9aac-4a45-aac6-0ac0fa2a2490" width="600" />
+</p>
+</details>
 
 ---
 
-## 📬 Contact
+## Contact
 
 Made by **Abhijay Yadav** — feel free to reach out!
 
-Happy shipping! 🚀
+Happy shipping! 
 

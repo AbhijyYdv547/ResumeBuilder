@@ -2,6 +2,7 @@
 .env
 *.log
 *.tmp
+node_modules
 
 # Frontend ignores
 /frontend/node_modules/

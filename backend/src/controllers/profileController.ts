@@ -1,21 +1,19 @@
-import { profileSchema } from "@/validators/profileSchema";
-import { Request,Response } from "express";
-import User from "@/models/User";
+import { profileSchema } from "../validators/profileSchema";
+import { Request, Response } from "express";
+import User from "../models/User";
 
-export const getProfileController = async (req:Request, res:Response) => {
+export const getProfileController = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.userId).select("-password");
-    if(!user){
-      res.status(404).json({error: "No user exists of this name"})
+    if (!user) {
+      res.status(404).json({ error: "No user exists of this name" });
       return;
     }
     res.json(user);
-
   } catch (error: any) {
     res.status(500).json({ error: error.message });
-
   }
-}
+};
 
 export const updateProfileController = async (req: Request, res: Response) => {
   try {
@@ -24,14 +22,13 @@ export const updateProfileController = async (req: Request, res: Response) => {
     const updatedUser = await User.findByIdAndUpdate(
       req.userId,
       validatedData,
-      { new: true }
+      { new: true },
     ).select("-password");
 
     if (!updatedUser) {
-  res.status(404).json({ error: "User not found" });
-  return;
-}
-
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
 
     res.json(updatedUser);
   } catch (error: any) {
@@ -41,4 +38,4 @@ export const updateProfileController = async (req: Request, res: Response) => {
     }
     res.status(500).json({ error: error.message });
   }
-}
+};

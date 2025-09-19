@@ -1,18 +1,31 @@
-import Resume from "@/models/Resume";
+import Resume from "../models/Resume";
 import { Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import { buildResumePrompt } from "@/utils/buildResumePrompt";
-import { formatResumeInput } from "@/utils/formatResumeInput";
-import { geminiGeneration } from "@/utils/geminiGeneration";
-import { normalizeResume } from "@/utils/normalizeResume";
+import { buildResumePrompt } from "../utils/buildResumePrompt";
+import { formatResumeInput } from "../utils/formatResumeInput";
+import { geminiGeneration } from "../utils/geminiGeneration";
+import { normalizeResume } from "../utils/normalizeResume";
 
 dotenv.config();
 
-
-export const genResController = async (req: Request, res: Response): Promise<void> => {
+export const genResController = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   try {
-    const { name, email, phone, linkedin, experience, skills, education, projects, summary, template } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      linkedin,
+      experience,
+      skills,
+      education,
+      projects,
+      summary,
+      template,
+    } = req.body;
 
     if (!name || !email || !phone || !linkedin || !skills || !education) {
       res.status(400).json({ error: "Missing required fields" });
@@ -24,25 +37,21 @@ export const genResController = async (req: Request, res: Response): Promise<voi
       return;
     }
 
-    const { 
-      formattedExperience, 
-      formattedEducation, 
-      formattedProjects 
-    } = formatResumeInput({ experience, education, projects })
+    const { formattedExperience, formattedEducation, formattedProjects } =
+      formatResumeInput({ experience, education, projects });
 
-    const userSummary = summary?.trim()
+    const userSummary = summary?.trim();
 
-    const prompt = buildResumePrompt({ 
-      name, 
-      skills, 
-      summary: userSummary 
-    })
+    const prompt = buildResumePrompt({
+      name,
+      skills,
+      summary: userSummary,
+    });
 
-   const aiSummary = await geminiGeneration({ prompt });
-  const cleanSummary = userSummary?.length
-  ? userSummary
-  : aiSummary?.trim() || "Passionate and results-driven professional.";
-
+    const aiSummary = await geminiGeneration({ prompt });
+    const cleanSummary = userSummary?.length
+      ? userSummary
+      : aiSummary?.trim() || "Passionate and results-driven professional.";
 
     const newResume = await Resume.create({
       userId: req.userId,
@@ -60,12 +69,11 @@ export const genResController = async (req: Request, res: Response): Promise<voi
 
     res.status(200).json(normalizeResume(newResume));
     return;
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message || "Internal Server Error" });
     return;
   }
 };
-
 
 export const getResController = async (req: Request, res: Response) => {
   try {
@@ -74,8 +82,7 @@ export const getResController = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
-}
-
+};
 
 export const getSpecificController = async (req: Request, res: Response) => {
   try {
@@ -93,13 +100,14 @@ export const getSpecificController = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
-}
-
+};
 
 export const delResController = async (req: Request, res: Response) => {
   try {
-
-    const deleted = await Resume.findOneAndDelete({ _id: req.params.id, userId: req.userId });
+    const deleted = await Resume.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.userId,
+    });
 
     if (!deleted) {
       res.status(404).json({ error: "Resume not found" });
@@ -109,4 +117,4 @@ export const delResController = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
-}
+};

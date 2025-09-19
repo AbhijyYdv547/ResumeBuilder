@@ -23,24 +23,20 @@ export const registerController = async (req: Request, res: Response) => {
     const regex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/;
 
     if (!regex.test(trimmedPassword)) {
-      res
-        .status(400)
-        .json({
-          message:
-            "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
-        });
+      res.status(400).json({
+        message:
+          "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
+      });
       return;
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       if (existingUser.authProvider === "google") {
-        return res
-          .status(409)
-          .json({
-            error:
-              "Email already registered via Google. Please use Google Login.",
-          });
+        return res.status(409).json({
+          error:
+            "Email already registered via Google. Please use Google Login.",
+        });
       }
       return res.status(409).json({ error: "Email already in use" });
     }
@@ -89,8 +85,8 @@ export const loginController = async (req: Request, res: Response) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    const { _id, name } = user;
-    res.json({ token, user: { _id, name, email } });
+
+    res.status(201).json({ token });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -123,12 +119,10 @@ export const googleLogin = async (req: Request, res: Response) => {
     if (!user) {
       user = await User.create({ name, email, authProvider: "google" });
     } else if (user.authProvider === "local") {
-      res
-        .status(400)
-        .json({
-          error:
-            "This email is already registered with a password. Please use email/password login.",
-        });
+      res.status(400).json({
+        error:
+          "This email is already registered with a password. Please use email/password login.",
+      });
       return;
     }
 

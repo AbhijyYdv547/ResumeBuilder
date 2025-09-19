@@ -7,25 +7,36 @@ import User from "../models/User.js";
 
 dotenv.config();
 
-beforeEach(async () => {
-  await mongoose.connect(process.env.DB_URI as string);
-  await User.deleteMany({ email: "test@test.com" });
-});
+let token = "";
 
-afterEach(async () => {
-  await mongoose.connection.close();
-});
+describe("Auth Flow", () => {
+  beforeEach(async () => {
+    await mongoose.connect(process.env.DB_URI as string);
+    await User.deleteMany({ email: "test@test.com" });
+  });
 
-describe("POST /register", () => {
-  it("should let people register", async () => {
-    const res = await request(app).post("/api/auth/register").send({
+  afterEach(async () => {
+    await mongoose.connection.close();
+  });
+
+  it("should let people register and login a user", async () => {
+    const registerRes = await request(app).post("/api/auth/register").send({
       name: "testify",
       email: "test@test.com",
       password: "Test@123456",
     });
 
-    console.log("Test response:", res.body);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.message).toBe("User registered successfully!");
+    expect(registerRes.statusCode).toBe(201);
+    expect(registerRes.body.message).toBe("User registered successfully!");
+
+    const loginRes = await request(app).post("/api/auth/login").send({
+      email: "test@test.com",
+      password: "Test@123456",
+    });
+
+    token = loginRes.body.token;
+
+    expect(loginRes.statusCode).toBe(201);
+    expect(loginRes.body).toHaveProperty("token");
   });
 });

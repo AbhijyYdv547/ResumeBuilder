@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../models/User";
-import axios from "axios";
 import { oauth2client } from "../utils/googleConfig";
 dotenv.config();
 
@@ -94,36 +93,27 @@ export const loginController = async (req: Request, res: Response) => {
 
 export const googleLogin = async (req: Request, res: Response) => {
   try {
-    const code = req.query.code as string;
-    if (!code) {
-      res.status(400).json({ error: "Missing code from Google" });
+    const token = req.body;
+    if (!token) {
+      res.status(400).json({ error: "Missing token from Google" });
       return;
     }
 
-    const { tokens } = await oauth2client.getToken(code);
-    oauth2client.setCredentials(tokens);
+    const tokenInfo = await oauth2client.getTokenInfo(token);
+    const email = tokenInfo.email;
 
-    const userRes = await axios.get<GoogleUser>(
-      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokens.access_token}`,
-    );
-
-    const { email, name } = userRes.data;
-
-    if (!email || !name) {
-      res.status(400).json({ error: "Email and Password are required" });
-      return;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
     }
 
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = await User.create({ name, email, authProvider: "google" });
-    } else if (user.authProvider === "local") {
-      res.status(400).json({
-        error:
-          "This email is already registered with a password. Please use email/password login.",
+      user = await User.create({
+        name: "Google User",
+        email,
+        authProvider: "google",
       });
-      return;
     }
 
     if (!process.env.JWT_SECRET) {
@@ -131,12 +121,13 @@ export const googleLogin = async (req: Request, res: Response) => {
       return;
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
     return res.status(200).json({
       message: "Success",
-      token,
+      token: jwtToken,
       user,
     });
   } catch (error) {

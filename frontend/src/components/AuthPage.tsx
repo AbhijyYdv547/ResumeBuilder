@@ -4,11 +4,10 @@ import React, { FormEvent, RefObject } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin, TokenResponse } from "@react-oauth/google";
 import { googleAuth } from "@/utils/api";
 import { useRedirectIfLoggedIn } from "@/hooks/useRedirectIfLoggedIn";
 import { Button } from "@/components/ui/button";
-
 
 interface AuthPageProps {
   nameRef?: RefObject<HTMLInputElement | null>;
@@ -29,19 +28,18 @@ const AuthPage = ({
 
   useRedirectIfLoggedIn();
 
-  const responseGoogle = async (authResult: { code?: string })=>{
+  const responseGoogle = async (tokenResponse: TokenResponse) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const idToken = (tokenResponse as any).id_token;
     try {
-      if(authResult['code']){
-        const result = await googleAuth(authResult['code']);
-        const token = result.data.token;
-        localStorage.setItem("token",token);
-        navigate('/dashboard')
-      }
+      const result = await googleAuth(idToken);
+      const token = result.data.token;
+      localStorage.setItem("token", token);
+      navigate("/dashboard");
     } catch (err) {
-      console.error("Error while requesting google code: ",err)
+      console.error("Error while requesting google code: ", err);
     }
-  }
-
+  };
   const errorHandler = (err: unknown) => {
     console.error("Google login error: ", err);
   };
@@ -49,17 +47,22 @@ const AuthPage = ({
   const googleLogin = useGoogleLogin({
     onSuccess: responseGoogle,
     onError: errorHandler,
-    flow: 'auth-code'
-  })
-
-
+    flow: "implicit",
+    scope: "openid email profile",
+  });
 
   return (
     <div className="min-h-screen min-w-screen bg-[#262626] flex justify-center items-center">
       <div className="shadow-input mx-auto w-full max-w-md rounded-none dark:bg-white p-4 md:rounded-2xl md:p-8 bg-black">
         <div className="flex items-center">
           <div>
-            <Button variant={"default"} className="bg-zinc-700" onClick={()=>navigate('/')}><IconArrowLeft/></Button>
+            <Button
+              variant={"default"}
+              className="bg-zinc-700"
+              onClick={() => navigate("/")}
+            >
+              <IconArrowLeft />
+            </Button>
           </div>
           <div className="flex-1 text-center">
             <h2 className="text-xl font-bold dark:text-neutral-800 text-neutral-200 text-center">
@@ -76,7 +79,9 @@ const AuthPage = ({
         <form className="my-8" onSubmit={onSubmit}>
           {login ? null : (
             <LabelInputContainer className="mb-4 ">
-              <Label htmlFor="name" className="text-white">Name</Label>
+              <Label htmlFor="name" className="text-white">
+                Name
+              </Label>
               <Input
                 id="name"
                 placeholder="Tyler"
@@ -88,7 +93,9 @@ const AuthPage = ({
           )}
 
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="email" className="text-white">Email Address</Label>
+            <Label htmlFor="email" className="text-white">
+              Email Address
+            </Label>
             <Input
               id="email"
               placeholder="projectmayhem@fc.com"
@@ -98,7 +105,9 @@ const AuthPage = ({
             />
           </LabelInputContainer>
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="password" className="text-white">Password</Label>
+            <Label htmlFor="password" className="text-white">
+              Password
+            </Label>
             <Input
               id="password"
               placeholder="••••••••"
@@ -115,13 +124,13 @@ const AuthPage = ({
             {login ? "Login" : "Sign up"} &rarr;
             <BottomGradient />
           </button>
-
         </form>
         <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent dark:via-neutral-300 to-transparent via-neutral-700" />
 
         <div className="flex justify-evenly items-center my-8">
-          <button className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md dark:bg-gray-50 px-4 font-medium text-black bg-zinc-900 shadow-[0px_0px_1px_1px_#262626]"
-            onClick={googleLogin}
+          <button
+            className="group/btn shadow-input relative flex h-10 items-center justify-start space-x-2 rounded-md dark:bg-gray-50 px-4 font-medium text-black bg-zinc-900 shadow-[0px_0px_1px_1px_#262626]"
+            onClick={() => googleLogin}
           >
             <IconBrandGoogle className="h-4 w-4 dark:text-neutral-800 text-neutral-300" />
             <span className="text-sm dark:text-neutral-700 text-neutral-300">

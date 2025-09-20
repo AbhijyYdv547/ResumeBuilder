@@ -9,7 +9,7 @@ export const getProfileController = async (req: Request, res: Response) => {
       res.status(404).json({ error: "No user exists of this name" });
       return;
     }
-    res.json(user);
+    res.status(200).json(user);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -30,7 +30,7 @@ export const updateProfileController = async (req: Request, res: Response) => {
       return;
     }
 
-    res.json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (error: any) {
     if (error.name === "ZodError") {
       res.status(400).json({ errors: error.errors });

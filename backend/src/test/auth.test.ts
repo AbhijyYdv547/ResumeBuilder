@@ -1,11 +1,6 @@
-import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import { app } from "../app.js";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import User from "../models/User.js";
-
-dotenv.config();
 
 vi.mock("googleapis", () => {
   return {
@@ -23,20 +18,13 @@ vi.mock("googleapis", () => {
   };
 });
 
+const email = `testuser+${Date.now()}@example.com`;
+
 describe("Auth Flow", () => {
-  beforeEach(async () => {
-    await mongoose.connect(process.env.DB_URI as string);
-    await User.deleteMany({ email: "test@test.com" });
-  });
-
-  afterEach(async () => {
-    await mongoose.connection.close();
-  });
-
   it("should let people register and login a user", async () => {
     const registerRes = await request(app).post("/api/auth/register").send({
       name: "testify",
-      email: "test@test.com",
+      email: email,
       password: "Test@123456",
     });
 
@@ -44,7 +32,7 @@ describe("Auth Flow", () => {
     expect(registerRes.body.message).toBe("User registered successfully!");
 
     const loginRes = await request(app).post("/api/auth/login").send({
-      email: "test@test.com",
+      email: email,
       password: "Test@123456",
     });
 

@@ -1,29 +1,24 @@
-import { describe, expect, it, afterAll, beforeAll, vi } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import request from "supertest";
 import { app } from "../app.js";
-import mongoose from "mongoose";
 
 let token: string;
 
-beforeAll(async () => {
-  await mongoose.connect(process.env.DB_URI as string);
+beforeEach(async () => {
+  const email = `testuser+${Date.now()}@example.com`;
 
   await request(app).post("/api/auth/register").send({
     name: "Test User",
-    email: "testuser@example.com",
+    email: email,
     password: "Password@123",
   });
 
   const loginRes = await request(app).post("/api/auth/login").send({
-    email: "testuser@example.com",
+    email: email,
     password: "Password@123",
   });
 
   token = loginRes.body.token;
-});
-
-afterAll(async () => {
-  await mongoose.connection.close();
 });
 
 describe("POST /score", () => {

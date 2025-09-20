@@ -1,29 +1,25 @@
-import { describe, expect, it, afterAll, beforeAll } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import request from "supertest";
 import { app } from "../app.js";
-import mongoose from "mongoose";
 
 let token: string;
 
-beforeAll(async () => {
-  await mongoose.connect(process.env.DB_URI as string);
+let email: string;
 
+beforeEach(async () => {
+  email = `testuser+${Date.now()}@example.com`;
   await request(app).post("/api/auth/register").send({
-    name: "Test User",
-    email: "testuser@example.com",
+    name: "User",
+    email: email,
     password: "Password@123",
   });
 
   const loginRes = await request(app).post("/api/auth/login").send({
-    email: "testuser@example.com",
+    email: email,
     password: "Password@123",
   });
 
   token = loginRes.body.token;
-});
-
-afterAll(async () => {
-  await mongoose.connection.close();
 });
 
 describe("Profile Flow", () => {
@@ -35,7 +31,7 @@ describe("Profile Flow", () => {
     expect(userRes.statusCode).toBe(200);
     expect(userRes.body).toMatchObject({
       name: "User",
-      email: "testuser@example.com",
+      email: email,
     });
   });
 });
@@ -46,7 +42,7 @@ describe("PUT /update", () => {
       .put("/api/profile/update")
       .send({
         name: "User",
-        email: "testuser@example.com",
+        email: email,
         password: "Password@123",
       })
       .set("Authorization", `Bearer ${token}`);
@@ -54,7 +50,7 @@ describe("PUT /update", () => {
     expect(updateRes.statusCode).toBe(200);
     expect(updateRes.body).toMatchObject({
       name: "User",
-      email: "testuser@example.com",
+      email: email,
     });
   });
 });

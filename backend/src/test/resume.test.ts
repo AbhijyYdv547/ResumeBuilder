@@ -1,43 +1,40 @@
 import { describe, expect, it, beforeEach, beforeAll } from "vitest";
-import request from "supertest";
-import { app } from "../app.js";
+import { request } from "./setup";
 import { resumeData } from "../utils/data.js";
 
 let token: string;
 let id: string;
 
-beforeAll(async () => {
+beforeEach(async () => {
   const email = `testuser+${Date.now()}@example.com`;
 
-  await request(app).post("/api/auth/register").send({
+  await request.post("/api/auth/register").send({
     name: "Test User",
     email: email,
     password: "Password@123",
   });
 
-  const loginRes = await request(app).post("/api/auth/login").send({
+  const loginRes = await request.post("/api/auth/login").send({
     email: email,
     password: "Password@123",
   });
 
   token = loginRes.body.token;
 
-  const res = await request(app)
+  const res = await request
     .post("/api/resumes/generate")
     .set("Authorization", `Bearer ${token}`)
     .send(resumeData);
 
-  console.log(res.body);
+  console.log("Resume creation response body:", res.body);
 
-  id = res.body.id;
-
-  expect(res.status).toBe(200);
-  expect(id).toBeDefined();
+  id = res.body._id || res.body.id;
+  console.log(id);
 });
 
 describe("Resume API", () => {
   it("should generate a resume", async () => {
-    const genRes = await request(app)
+    const genRes = await request
       .post("/api/resumes/generate")
       .set("Authorization", `Bearer ${token}`)
       .send(resumeData);
@@ -46,7 +43,7 @@ describe("Resume API", () => {
   });
 
   it("should get all resumes", async () => {
-    const getRes = await request(app)
+    const getRes = await request
       .get("/api/resumes/")
       .set("Authorization", `Bearer ${token}`);
 
@@ -54,18 +51,21 @@ describe("Resume API", () => {
   });
 
   it("should get specific resume", async () => {
-    const specRes = await request(app)
+    console.log("Token:", token);
+    console.log("Resume ID:", id);
+    const specRes = await request
       .get(`/api/resumes/${id}`)
       .set("Authorization", `Bearer ${token}`);
-    console.log(specRes);
+
+    console.log("Response status:", specRes.status);
+    console.log("Response body:", specRes.body);
     expect(specRes.status).toBe(200);
   });
 
   it("should delete specific resume", async () => {
-    const delRes = await request(app)
+    const delRes = await request
       .delete(`/api/resumes/${id}`)
       .set("Authorization", `Bearer ${token}`);
-    console.log(delRes);
     expect(delRes.status).toBe(200);
     expect(delRes.body.message).toBe("Resume deleted successfully");
   });

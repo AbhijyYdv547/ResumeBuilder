@@ -1,19 +1,18 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import request from "supertest";
-import { app } from "../app.js";
+import { request } from "./setup";
 
 let token: string;
 
 beforeEach(async () => {
   const email = `testuser+${Date.now()}@example.com`;
 
-  await request(app).post("/api/auth/register").send({
+  await request.post("/api/auth/register").send({
     name: "Test User",
     email: email,
     password: "Password@123",
   });
 
-  const loginRes = await request(app).post("/api/auth/login").send({
+  const loginRes = await request.post("/api/auth/login").send({
     email: email,
     password: "Password@123",
   });
@@ -23,7 +22,7 @@ beforeEach(async () => {
 
 describe("POST /score", () => {
   it("should give a github score", async () => {
-    const res = await request(app)
+    const res = await request
       .post("/api/score/")
       .set("Authorization", `Bearer ${token}`)
       .send({

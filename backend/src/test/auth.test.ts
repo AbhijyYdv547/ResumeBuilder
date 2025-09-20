@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import request from "supertest";
-import { app } from "../app.js";
+import { request } from "./setup";
 
 vi.mock("googleapis", () => {
   return {
@@ -22,7 +21,7 @@ const email = `testuser+${Date.now()}@example.com`;
 
 describe("Auth Flow", () => {
   it("should let people register and login a user", async () => {
-    const registerRes = await request(app).post("/api/auth/register").send({
+    const registerRes = await request.post("/api/auth/register").send({
       name: "testify",
       email: email,
       password: "Test@123456",
@@ -31,7 +30,7 @@ describe("Auth Flow", () => {
     expect(registerRes.statusCode).toBe(201);
     expect(registerRes.body.message).toBe("User registered successfully!");
 
-    const loginRes = await request(app).post("/api/auth/login").send({
+    const loginRes = await request.post("/api/auth/login").send({
       email: email,
       password: "Test@123456",
     });
@@ -43,7 +42,7 @@ describe("Auth Flow", () => {
   });
 
   it("should let user to login or register using google", async () => {
-    const googleRes = await request(app).post("/api/auth/google").send({
+    const googleRes = await request.post("/api/auth/google").send({
       token: "some_mock_token",
     });
 

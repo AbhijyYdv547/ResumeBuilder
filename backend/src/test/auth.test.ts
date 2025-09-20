@@ -59,7 +59,6 @@ describe("Auth Flow", () => {
       token: "some_mock_token",
     });
 
-    console.log(googleRes.body);
     expect(googleRes.statusCode).toBe(200);
     expect(googleRes.body).toHaveProperty("token");
     expect(googleRes.body.user.email).toBe("lukk@gmail.com");

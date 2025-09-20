@@ -48,7 +48,10 @@ export const genResController = async (
       summary: userSummary,
     });
 
-    const aiSummary = await geminiGeneration({ prompt });
+    const isTestEnv = process.env.NODE_ENV === "test";
+    const aiSummary = isTestEnv
+      ? "Test Summary"
+      : await geminiGeneration({ prompt });
     const cleanSummary = userSummary?.length
       ? userSummary
       : aiSummary?.trim() || "Passionate and results-driven professional.";
@@ -78,7 +81,7 @@ export const genResController = async (
 export const getResController = async (req: Request, res: Response) => {
   try {
     const resumes = await Resume.find({ userId: req.userId });
-    res.json(resumes.map(normalizeResume));
+    res.status(200).json(resumes.map(normalizeResume));
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -96,7 +99,7 @@ export const getSpecificController = async (req: Request, res: Response) => {
       res.status(404).json({ error: "Resume not found" });
       return;
     }
-    res.json(normalizeResume(resume));
+    res.status(200).json(normalizeResume(resume));
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -113,7 +116,7 @@ export const delResController = async (req: Request, res: Response) => {
       res.status(404).json({ error: "Resume not found" });
       return;
     }
-    res.json({ message: "Resume deleted successfully" });
+    res.status(200).json({ message: "Resume deleted successfully" });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

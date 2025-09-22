@@ -49,7 +49,7 @@ resume-builder/
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 ### 1. Local Setup
 

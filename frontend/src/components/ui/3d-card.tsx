@@ -23,7 +23,7 @@ export const CardContainer = ({
   children?: React.ReactNode;
   className?: string;
   containerClassName?: string;
-  onClick?:()=>void
+  onClick?: () => void;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
@@ -126,6 +126,7 @@ export const CardItem = ({
 
   useEffect(() => {
     handleAnimations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMouseEntered]);
 
   const handleAnimations = () => {
@@ -149,6 +150,7 @@ export const CardItem = ({
 };
 
 // Create a hook to use the context
+// eslint-disable-next-line react-refresh/only-export-components
 export const useMouseEnter = () => {
   const context = useContext(MouseEnterContext);
   if (context === undefined) {

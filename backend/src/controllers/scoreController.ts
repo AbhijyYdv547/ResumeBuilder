@@ -26,10 +26,12 @@ export const genScoreController = async (req: Request, res: Response) => {
     }
 
     const scorePrompt = genScorePrompt({ profileData });
-    const score = await geminiGeneration({ prompt: scorePrompt });
 
+    const score = await geminiGeneration({ prompt: scorePrompt });
+    console.log("score", score);
     const advicePrompt = genAdvicePrompt({ profileData });
     const advice = await geminiGeneration({ prompt: advicePrompt });
+    console.log("advice", advice);
 
     const result = {
       score,
@@ -38,6 +40,7 @@ export const genScoreController = async (req: Request, res: Response) => {
 
     res.status(200).json(result);
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Some error occured while generating score",
     });

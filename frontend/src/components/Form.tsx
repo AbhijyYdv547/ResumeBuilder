@@ -60,8 +60,7 @@ const formSchema = z.object({
 });
 
 export default function MyForm() {
-
-    const { getToken } = useAuthToken();
+  const { getToken } = useAuthToken();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,7 +78,7 @@ export default function MyForm() {
           location: "",
           startDate: "",
           endDate: "",
-          responsibilities: ["","",""],
+          responsibilities: ["", "", ""],
         },
       ],
       education: [
@@ -374,7 +373,7 @@ export default function MyForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input 
+                        <Input
                           placeholder="e.g. Developed features using React"
                           {...field}
                         />
@@ -404,7 +403,7 @@ export default function MyForm() {
               location: "",
               startDate: "",
               endDate: "",
-              responsibilities: ["","",""],
+              responsibilities: ["", "", ""],
             })
           }
         >
@@ -504,7 +503,7 @@ export default function MyForm() {
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      className="resize-none"
+                      className="resize-none text-white"
                       placeholder="Brief project summary"
                       {...field}
                     />
@@ -554,8 +553,9 @@ export default function MyForm() {
           <Button
             type="submit"
             className="text-center px-8 py-6 hover:bg-zinc-700"
+            disabled={form.formState.isSubmitting}
           >
-            Submit
+            {form.formState.isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </div>
       </form>

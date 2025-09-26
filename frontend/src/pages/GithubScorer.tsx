@@ -103,7 +103,11 @@ const GithubScorer = () => {
               )}
             />
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting
+                ? "Generating Score..."
+                : "Generate Score"}
+            </Button>
           </form>
         </Form>
       </div>

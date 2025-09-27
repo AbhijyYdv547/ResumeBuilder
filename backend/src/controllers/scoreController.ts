@@ -14,6 +14,7 @@ export const genScoreController = async (req: Request, res: Response) => {
       };
 
       res.status(200).json(data);
+      return;
     }
 
     const profileData = await getUserGithub(username);
